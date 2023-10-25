@@ -1,0 +1,517 @@
+<style>
+
+  .on_top_always {
+    z-index: 999 !important;
+  }
+  
+  </style>
+
+<br/>
+<br/>
+<br/>
+{% if form is not none %}
+
+<!--Don Irwin use this on the tool tip so that it will be on top always-->
+
+<div class="container">
+  <table class="table">
+      <tr >
+          <td id="world_event_table" >
+              <span class="align-middle">
+                  <form method="post" class="form" action="" id="predict_api_values" name="predict_api_values">
+                  <table class="table table-responsive-md table-striped table-hover ">
+                      <tbody>
+                        <tr>
+                            <td>
+                                medinc_list<br/>
+                                {{ form.medinc_list(**{"onchange":"set_text_values(this.form.medinc_list.value,'medinc_list')"}) }}
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                houseage_list<br/>
+                                {{ form.houseage_list(**{"onchange":"set_text_values(this.form.houseage_list.value,'houseage_list')"}) }}
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                averooms_list<br/>
+                                {{ form.averooms_list(**{"onchange":"set_text_values(this.form.averooms_list.value,'averooms_list')"}) }}
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                avebedrms_list<br/>
+                                {{ form.avebedrms_list(**{"onchange":"set_text_values(this.form.avebedrms_list.value,'avebedrms_list')"}) }}                                                                
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                population_list<br/>
+                                {{ form.population_list(**{"onchange":"set_text_values(this.form.population_list.value,'population_list')"}) }}                                                                                                
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                aveoccup_list<br/>
+                                {{ form.aveoccup_list(**{"onchange":"set_text_values(this.form.aveoccup_list.value,'aveoccup_list')"}) }}                                                                                                
+                            </td>                            
+                            <td>
+                            </td>
+                            <td colspan="2">
+                                cities_list<br/>
+                                {{ form.cities_list(**{"onchange":"set_text_values(this.form.cities_list.value,'cities_list')"}) }}                                                                                                
+                            </td>                                                
+                        </tr>
+                        <tr>
+                            <td>
+                                medinc_text<br/>
+                                {{ form.medinc_text (style="width:50%;")  }}
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                houseage_text<br/>
+                                {{ form.houseage_text  (style="width:50%;")  }}                                
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                averooms_text<br/>
+                                {{ form.averooms_text  (style="width:50%;")  }}                                
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                avebedrms_text<br/>
+                                {{ form.avebedrms_text  (style="width:50%;")  }}                                                                
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                population_text<br/>
+                                {{ form.population_text  (style="width:50%;")  }}                                                                                                
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                aveoccup_text<br/>
+                                {{ form.aveoccup_text(style="width:50%;")  }}                                                                                                
+                            </td>                            
+                            <td>
+                            </td>
+                            <td>
+                                lat_text<br/>
+                                {{ form.lat_text  (style="width:70%;")  }}
+                            </td>
+                            <td>
+                                long_text<br/>
+                                {{ form.long_text  (style="width:70%;")  }}                                
+                            </td>                                                
+                        </tr>
+                        <tr>
+                            <td colspan="14">
+                                <pre id="sample_values">
+                                    Interesting sample values:
+                                        ******************************
+                                        [   8.3252       41.            6.98412698    1.02380952  322.
+                                            2.55555556   37.88       -122.23      ]
+                                        ****************************** 
+                                </pre>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                    <button class="btn btn-primary" type="button" id="btnPreparePayload" onclick="send_form();" >Prepare, and transmit JSON to FastAPI endpoint</button>
+                            </td>
+                            <td colspan="8">
+                                <div id="id_validation_error" style="display: none;">
+                                    All values must be integers or float values.  Please correct.
+                                  </div>
+                            </td>
+                        </tr>
+                        {% if api_json is not none %}
+                        <tr>
+                            <td colspan="14">
+                                The json string below will be transmitted to the API serving a predict model.  -- Change values to see it change. --
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="14">
+                                <pre id="api_json">
+{{ api_json }}
+                                </pre>                                
+
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% if return_json is not none %}
+                        <tr>
+                            <td colspan="14">
+                                The FastAPI server returned the following json payload:
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="14" >
+                                <pre id="return_json" style="white-space: pre-line" >
+{{ return_json }}
+                                </pre>                                
+
+                            </td>
+                        </tr>
+                        {% endif %}
+
+                      </tbody>
+                  </table>
+                {{ form.csrf_token }}
+                  </form>
+              </span>
+          </td>
+      </tr>
+  </table>
+
+</div>
+
+
+  <script>
+
+     function send_form()
+    {
+        // <!--
+        //     Make sure all _text fields contain float values.
+        // -->
+        const forms = document.querySelectorAll('form');
+        const form = forms[0];
+        var valid_floats = true;
+
+        Array.from(form.elements).forEach((input) => {
+            if(input.id.endsWith("_text"))
+            {
+                console.log(input.value);
+                try {
+                    var value = input.value;
+                    if( (input.value!="") && ((!isNaN(value) && value.toString().indexOf('.') != -1) || (!isNaN(value)))  )
+                    {
+
+                    }
+                    else
+                    {
+                        valid_floats = false;
+                    }
+                    } catch (error) {
+                        valid_floats = false;
+                    }
+            }
+            
+        });        
+ 
+        if(valid_floats!=true)
+        {
+            document.getElementById("id_validation_error").style.cssText = "display: block;color: red;";
+            return;
+        }
+        else
+        {
+            document.getElementById("id_validation_error").style.cssText = "display: none;";
+        }
+
+        page_loading();
+    
+          $.ajax({
+              url: '/consume_fastapi',
+              type: 'post',
+              data: $('form').serialize(),
+              success: function(data){                 
+                  $('#fastapi_caller').empty();                 
+                  $('#fastapi_caller').html(data); 
+                  $('#fastapi_caller').append(data.htmlresponse); 
+                  page_not_loading();
+              }
+          });
+          
+    };
+
+
+    function set_drop_down_value(drop_down_id,value)
+    {
+      //console.log(value);
+      for (var option of document.getElementById(drop_down_id).options)
+        {
+          //console.log(option.value);
+        if (option.value === value)
+        {
+            option.selected = true;
+            return;
+        }
+        }
+
+    }
+
+    function set_text_values(value,dd_id)
+    {
+        if(dd_id!="cities_list")
+        {
+            let base_id = dd_id.split('_')[0];
+            let text_id = base_id + "_text";
+            document.getElementById(text_id).value=value;
+        }
+        if(dd_id=="cities_list")
+        {
+            let lat = value.split(',')[0];
+            let long = value.split(',')[1];
+            document.getElementById("lat_text").value=lat;
+            document.getElementById("long_text").value=long;
+        }
+        
+    }
+
+    function populate_initial_values()
+    {
+
+        const forms = document.querySelectorAll('form');
+        const form = forms[0];
+
+        Array.from(form.elements).forEach((input) => {
+            if(input.id.endsWith("_list"))
+            {
+                let dd_id = input.id;
+                value=document.getElementById(dd_id).value;
+
+                if(dd_id!="cities_list")
+                {
+                    let base_id = dd_id.split('_')[0];
+                    let text_id = base_id + "_text";
+                    if(document.getElementById(text_id).value=='')
+                    {
+                    document.getElementById(text_id).value=value;
+                    }
+                }
+                if(dd_id=="cities_list")
+                {
+                    let lat = value.split(',')[0];
+                    let long = value.split(',')[1];
+                    document.getElementById("lat_text").value=lat;
+                    document.getElementById("long_text").value=long;
+                }                
+
+            }
+            
+        });        
+
+
+        // if(dd_id!="cities_list")
+        //         {
+        //             let base_id = dd_id.split('_')[0];
+        //             let text_id = base_id + "_text";
+        //             if(document.getElementById(text_id).value=='')
+        //             {
+        //             document.getElementById(text_id).value=value;
+        //             }
+        //         }
+        //         if(dd_id=="cities_list")
+        //         {
+        //             let lat = value.split(',')[0];
+        //             let long = value.split(',')[1];
+        //             if(document.getElementById("lat_text").value=="")
+        //             {
+        //                 document.getElementById("lat_text").value=lat;
+        //             }
+        //             if(document.getElementById("long_text").value=="")
+        //             {
+        //             document.getElementById("long_text").value=long;
+        //             }
+        //         }                
+
+
+
+        
+    }
+
+ 
+  
+      $(document).ready(function () {
+
+          page_not_loading();
+          populate_initial_values();
+
+        //   set_drop_down_value("state_list","{{state}}");
+        //   set_drop_down_value("county_list","{{county}}");
+
+
+      });
+
+    </script>    
+
+  {% endif %}
+
+  {% if chart_json is not none %}
+        
+
+  <div class="modal fade" id="dataset_modal" >
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content modal-lg">
+            <div class="modal-header modal-lg">
+              <table border="0" width="100%"></table>
+              <tr>
+                <td>
+                  <h4 class="modal-title">Raw dataset for {{county_text}}.</h4>
+                </td>
+                <td>
+                  <button type="button" class="close" data-dismiss="modal">×</button>
+                </td>
+              </tr>
+                
+              
+            </div>
+            <div class="modal-body modal-lg" id="dataset_table_parent">
+              <h1>
+                <!--Displaying the converted table-->
+                  {% for table in tables %}
+                  <h2>{{titles[loop.index]}}</h2>							
+                  {{ table|safe }}
+                  {% endfor %}	
+                </h1>        
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="predict_dataset_modal" >
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content modal-lg">
+            <div class="modal-header modal-lg">
+              <table border="0" width="100%"></table>
+              <tr>
+                <td>
+                  <h4 class="modal-title">Predict dataset for {{county_text}}.</h4>
+                </td>
+                <td>
+                  <button type="button" class="close" data-dismiss="modal">×</button>
+                </td>
+              </tr>
+                
+              
+            </div>
+            <div class="modal-body modal-lg" id="predict_dataset_table_parent">
+              <h1>
+                <!--Displaying the converted table-->
+                  {% for table in predict_tables %}
+                  <h2>{{titles[loop.index]}}</h2>							
+                  {{ table|safe }}
+                  {% endfor %}	
+                </h1>        
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="initial_model_modal" >
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content modal-lg">
+            <div class="modal-header modal-lg">
+              <table border="0" width="100%"></table>
+              <tr>
+                <td>
+                  <h4 class="modal-title">Model parameters (initial model) for {{county_text}}.</h4>
+                </td>
+                <td>
+                  <button type="button" class="close" data-dismiss="modal">×</button>
+                </td>
+              </tr>
+                
+              
+            </div>
+            <div class="modal-body modal-lg" id="initial_model_modal_content">
+              <h1>
+                <!--Displaying the converted table-->
+                  {{ INITIAL_HPARAMS|safe }}
+                </h1>        
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="tuned_model_modal" >
+    <div class="modal-dialog modal-lg" >
+        <div class="modal-content modal-lg">
+            <div class="modal-header modal-lg">
+              <table border="0" width="100%"></table>
+              <tr>
+                <td>
+                  <h4 class="modal-title">Model parameters (tuned model) for {{county_text}}.</h4>
+                </td>
+                <td>
+                  <button type="button" class="close" data-dismiss="modal">×</button>
+                </td>
+              </tr>
+                
+              
+            </div>
+            <div class="modal-body modal-lg" id="tuned_model_modal_content">
+              <h1>
+                <!--Displaying the converted table-->
+                  {{ TUNED_HPARAMS|safe }}
+                </h1>        
+            </div>
+        </div>
+    </div>
+  </div>  
+
+  <br />
+  
+  
+      </div>
+  <!-- Placeholder for the tooltip -->
+  <div id="vis-tooltip" class="vg-tooltip"></div>
+      </div>
+  <!-- Render Charts -->
+  <script type="text/javascript">
+
+  function render_initial_model_modal(){
+    $('#initial_model_modal').modal('show'); };  
+
+    function render_tuned_model_modal(){
+    $('#tuned_model_modal').modal('show'); };      
+
+
+  function pop_out_county_modal()
+  {
+    url = './section_five_popout?state=' + '{{state}}' + '&county=' + '{{county}}' +  '&popup=' + '{{popup}}' +  '&county_or_msa=' + '{{county_or_msa}}' 
+    window.open(url,'','toolbar=no');
+  }
+
+  function how_it_started()
+  {
+    window.open('./static/pdfs/w210_project_proposal.pdf','','toolbar=no');
+  }
+  
+  function play_closing_audio()
+  {
+    var audio = new Audio("./static/audio/cant_do_it_like_me_4.mp3")
+    audio.play()
+  }
+
+  function swap_msa_county(the_value){
+
+    county_or_msa = $("#county_or_msa").val();
+    if(county_or_msa == the_value)
+    {return;}
+
+    $("#county_or_msa").val(the_value);
+    state = $("#state_list").val();
+    county = "";
+    refresh_predictions(state,county,the_value);
+    
+
+
+    };
+
+
+  
+  
+  </script>
+  
+    {% endif %}
+  

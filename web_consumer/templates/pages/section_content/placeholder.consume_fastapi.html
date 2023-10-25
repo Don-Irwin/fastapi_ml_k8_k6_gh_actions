@@ -1,0 +1,35 @@
+
+<div id="fastapi_caller"></div>
+
+<script>
+
+
+
+      function refresh_fastapi(state,county,county_or_msa){
+  
+  
+            $.ajax({
+                url: '/consume_fastapi',
+                type: 'post',
+                data: {state:state,county:county,county_or_msa:county_or_msa},
+                success: function(data){ 
+                    $('#fastapi_caller').empty();                 
+                    $('#fastapi_caller').html(data); 
+                    $('#fastapi_caller').append(data.htmlresponse); 
+                    page_not_loading();
+                }
+            });
+            
+          };
+
+  $(document).ready(function () {
+      
+      page_loading();
+      //refresh_predictions("TX","Austin-Round Rock-Georgetown_TX","MSA");
+      refresh_fastapi("TX","Amarillo_TX","MSA");
+  
+  });
+  
+  </script>
+  
+  

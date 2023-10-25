@@ -1,0 +1,77 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<style>
+
+  .on_top_always {
+    z-index: 999 !important;
+  }
+  
+  </style>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+    <div class="container">
+
+      <div class="container-fluid" id="eu_event_detail_rendering" >
+          <div class="row">
+              <div class="col-md-1">
+                  
+              </div>
+              <div class="col-md-10">
+
+
+                          <h1>
+                          <!--Displaying the converted table-->
+                            {% for table in tables %}
+                            <h2>{{titles[loop.index]}}</h2>							
+                            {{ table|safe }}
+                            {% endfor %}	
+                          </h1>
+                          
+
+                  
+                          
+              </div>
+              <div class="col-md-1 float-right">
+                  &nbsp;
+              </div>
+          </div>
+       </div>
+
+    </div> 
+
+<script>
+    $(document).ready(function () {
+
+      $("table.dataframe").attr("class","display")
+      $("table.display").attr("border","0")
+
+      $("table.display").attr("id","mydataframe")
+
+      $("#mydataframe").dataTable( {
+        "columns": [
+          null,
+          { "width": "15%" },
+          { "width": "15%" },
+          null,
+          null,
+          null, 
+          null
+        ],
+        "buttons": [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]        
+      } );
+ 
+  
+      }).columns.adjust().responsive.recalc();
+
+  </script>    
+
+{% endblock %}

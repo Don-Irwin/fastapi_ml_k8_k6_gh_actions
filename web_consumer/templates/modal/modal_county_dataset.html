@@ -1,0 +1,47 @@
+<style>
+  .on_top_always {
+    z-index: 999 !important;
+  }
+  
+  </style>
+
+
+  <div id="dataset_container">
+
+                          <h1>
+                          <!--Displaying the converted table-->
+                            {% for table in tables %}
+                            <h2>{{titles[loop.index]}}</h2>							
+                            {{ table|safe }}
+                            {% endfor %}	
+                          </h1>
+                          
+
+<script>
+    $(document).ready(function () {
+
+
+      $("table.dataframe").attr("class","display")
+      $("table.display").attr("border","0")
+
+      $("table.display").attr("id","mydataframe")
+
+      $("#mydataframe").dataTable( {
+        "columns": [
+          null,
+          { "width": "15%" },
+          { "width": "15%" },
+          null,
+          null,
+          null, 
+          null
+        ],
+        "buttons": [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]        
+      } ).columns.adjust().responsive.recalc();
+ 
+  
+      });
+
+  </script>   

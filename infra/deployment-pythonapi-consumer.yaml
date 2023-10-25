@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: pythonapi-consumer
+   namespace: w255
+spec:
+   replicas: 1
+   selector:
+      matchLabels:
+         app: pythonapi-consumer
+   template:
+      metadata:
+         labels:
+            app: pythonapi-consumer
+      spec:
+         containers:
+            - name: w255-lab3-don-irwin-pythonapi-consumer
+              imagePullPolicy: Never
+              image: w255_l3_api_web_consumer:latest
+              ports:
+              #- containerPort: 8888
+              - containerPort: 5000
+              readinessProbe:
+               initialDelaySeconds: 5
+               periodSeconds: 1
+               timeoutSeconds: 1
+               successThreshold: 1
+               #let it try a few times as it could take a minute to come up
+               failureThreshold: 2
+               httpGet:
+                  host:
+                  scheme: HTTP
+                  path: /health
+                  port: 5000
+               initialDelaySeconds: 2
+               periodSeconds: 2  
+              livenessProbe:
+               httpGet:
+                  path: /health
+                  port: 5000
+               failureThreshold: 1
+               periodSeconds: 60
+               # Override pod-level terminationGracePeriodSeconds #
+               terminationGracePeriodSeconds: 60

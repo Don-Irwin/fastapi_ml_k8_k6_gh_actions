@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: redisserver
+   namespace: w255
+spec:
+   selector:
+      matchLabels:
+         app: redisserver
+   template:
+      metadata:
+         labels:
+            app: redisserver
+      spec:
+         containers:
+            - name: redisserver
+              image: redis:latest
+              ports:
+              - containerPort: 6379

@@ -1,0 +1,129 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<br/>
+<br/>
+
+<div id="section_intro_content" class="my_content_section" data-href="intro_section"></div>
+
+<a id="section_one"></a>
+<br/>
+<div id="section_one_content" class="my_content_section" data-href="section_one">
+</div>
+
+<a id="section_onea"></a>
+<br/>
+<div id="section_onea_content" class="my_content_section" data-href="section_onea">
+</div>
+
+
+<a id="section_two"></a>
+<div id="section_two_content" class="my_content_section" data-href="section_two">
+</div>
+ 
+<a id="section_three"></a>
+<div id="section_three_content" class="my_content_section" data-href="section_three"></div>
+<br/>
+
+<a id="section_four"></a>
+<div id="section_four_content" class="my_content_section" data-href="section_four"></div>
+<br/>
+
+<a id="section_five"></a>
+<div id="section_five_content"  class="my_content_section" data-href="section_five"></div>
+<br/>
+
+<a id="section_six"></a>
+<div id="section_six_content" class="my_content_section" data-href="section_six"></div>
+<br/>
+
+<a id="section_seven"></a>
+<div id="section_seven_content" class="my_content_section" data-href="section_seven">
+<br/>
+
+</div>
+
+
+<div class="modal fade" id="videomodal" >
+<div class="modal-dialog modal-lg" >
+<div class="modal-content modal-lg">
+    <div class="modal-header modal-lg">
+        <h4 class="modal-title"> <button type="button" class="close" data-dismiss="modal" >X</button> <p id="video_modal_title_text">Lorisa Arnold, Realtor, C.B.R. Compass Real Estate</p>
+        </h4>
+    </div>
+    <div class="modal-body modal-lg" id="video_modal_body">
+  
+    </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      
+      <div class="modal-body" >
+       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></span>
+        </button>        
+        <!-- 16:9 aspect ratio -->
+        <div class="ratio ratio-16x9">
+          <iframe class="embed-responsive-item" src="" id="video"  allowscriptaccess="always" allow="autoplay"></iframe>
+        </div>
+              
+        
+      </div>
+
+    </div>
+  </div>
+</div> 
+
+
+<script>
+
+function render_video_modal(target_modal="video_modal_body",video_url="https://www.youtube.com/embed/-AjgHs66V70",title="Lorisa Arnold, Realtor, C.B.R. Compass Real Estate"){
+
+page_loading();
+
+//Default -- Interview
+//alert(video_url);
+
+$.ajax({
+    url: '/videomodaldata',
+    type: 'post',
+    data: {video_url:video_url,title:title},
+    success: function(data){ 
+        $('#'+target_modal).html(data); 
+        $('#'+target_modal).append(data.htmlresponse);
+        $('#videomodal').modal('show'); 
+    }
+});
+};
+
+
+
+$(document).ready(function () {
+
+    {% if is_new_user == true %}
+      var is_new_user = true;
+    {% else %}
+      var is_new_user = false;
+    {% endif %}                                    
+
+
+      // if(is_new_user == true)
+      // {
+        
+      //   //$('#myModal').show();
+      //   render_video_modal();
+      // }
+
+});
+
+</script>  
+
+
+{% endblock %}

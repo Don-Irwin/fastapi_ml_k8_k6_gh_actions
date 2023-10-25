@@ -1,0 +1,23 @@
+HTML:
+
+    MAIN TEMPLATE:  -- contains all links etc.
+
+    templates/layouts/main.html
+    
+        NOTES:  
+        
+    HOME TEMPLATE:
+    
+    templates/pages/placeholder.home.html
+    
+        NOTES:
+        
+            Holds placeholders for the individual sections.
+    
+    SECTION PLACEHOLDERS:
+    
+        /templates/pages/section_content/placeholder.about.html
+
+    
+    CONTENT MODALS:
+    

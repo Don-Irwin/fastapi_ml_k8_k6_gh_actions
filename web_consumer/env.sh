@@ -1,0 +1,6 @@
+#!/bin/bash
+#environment variables for project
+IMAGE_NAME_WC=w255_l3_api_web_consumer
+APP_NAME_WC=w255_l3_api_web_consumer
+DOCKER_FILE_WC=Dockerfile.api_consumer
+VENV_NAME=l3_api_web_consumer

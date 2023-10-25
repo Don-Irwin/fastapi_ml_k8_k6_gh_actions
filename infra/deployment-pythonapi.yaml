@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: pythonapi
+   namespace: w255
+spec:
+   replicas: 3
+   selector:
+      matchLabels:
+         app: pythonapi
+   template:
+      metadata:
+         labels:
+            app: pythonapi
+      spec:
+         containers:
+            - name: w255-lab3-don-irwin
+              imagePullPolicy: Never
+              image: w255_lab3_don_irwin:latest
+              ports:
+              - containerPort: 8000
+              readinessProbe:
+               initialDelaySeconds: 1
+               periodSeconds: 2
+               timeoutSeconds: 1
+               successThreshold: 1
+               failureThreshold: 1
+               httpGet:
+                  host:
+                  scheme: HTTP
+                  path: /health
+                  port: 8000
+               initialDelaySeconds: 5
+               periodSeconds: 5        
+              livenessProbe:
+               httpGet:
+                  path: /health
+                  port: 8000
+               failureThreshold: 1
+               periodSeconds: 60
+               # Override pod-level terminationGracePeriodSeconds #
+               terminationGracePeriodSeconds: 60                     
+         initContainers:
+            - name: verify-redis-dns
+              image: goodsmileduck/redis-cli
+              imagePullPolicy: IfNotPresent
+              command: [ 'sh', '-c', 'until redis-cli  -h redis -p 6379  get hello; do echo "Sleeping a bit"; sleep .1; done; echo "ready!"; ' ]

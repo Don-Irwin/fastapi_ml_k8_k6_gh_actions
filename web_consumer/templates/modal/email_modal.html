@@ -1,0 +1,88 @@
+    {% if form is not none %}
+
+<style>
+  .large-text-input
+  {
+  height:100px;
+  width:550px;
+  }
+  .my_form_width
+  {
+   width:550px;
+  }
+</style>
+
+      {%if success==false%}
+        <div class="form-only-page">
+          <form method="post" action="/send_email" id="sendmessage" name="sendmessage">
+
+            {{ form.first_name(class_ = 'form-control first-input my_form_width', placeholder = 'First Name', required = true, autofocus = true) }}
+            <br/>
+            {% for field, errors in form.errors.items() %}
+              {%if field=='email_address'%}
+              {{ '<br/>'.join(errors) | safe }}
+              {%endif%}
+            {% endfor %}
+            {{ form.email_address(class_ = 'form-control first-input my_form_width', placeholder = 'Email Address', required = true, autofocus = true) }}
+            <br/>
+            {{ form.message_text(class_ = 'form-control large-text-input', placeholder = 'Message Text', required = true, autofocus = true) }}
+            <br/>
+            {{ form.csrf_token }}
+
+            
+            <input type="submit" value="Send Your Message" class="btn btn-primary btn-sm my_form_width" id="btnSubmit" name="btnSubmit"  >
+            
+          </form>
+        </div>
+      {%endif%}
+
+      {%if success==true%}
+        <div>
+            <h2>
+              <p>
+                Thank you for your message!<br/>
+                We will get back to you shortly.
+              </p>
+            </h2>
+        </div>
+      {%endif%}      
+
+    {% endif %}
+
+
+<script>
+
+
+  $(document).ready(function () {
+
+      page_not_loading();
+
+      //$("#sendmessage").submit(function(e) {
+      $(document).on('submit', '#sendmessage', function(event){
+
+        page_loading();
+
+        event.preventDefault(); // avoid to execute the actual submit of the form.
+
+      var form = $(this);
+      var actionUrl = form.attr('action');
+
+          $.ajax({
+              type: "POST",
+              url: actionUrl,
+              data: form.serialize(), // serializes the form's elements.
+              success: function(data){ 
+                  $('.modal-body').html(data); 
+                  $('.modal-body').append(data.htmlresponse);
+                  $('#email_modal').modal('show'); 
+              }
+          });
+
+          return false;
+
+      });
+
+
+
+  });
+</script>

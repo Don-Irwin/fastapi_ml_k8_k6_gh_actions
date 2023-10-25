@@ -1,0 +1,106 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+
+<br />
+<p>
+    <br />
+    <br />
+</p>
+
+  <table border="0" cellspacing="0" cellpadding="0">
+
+    
+
+    <tr>
+      <td class="text-nowrap">
+        <h3>Days on Market Signal:&nbsp;&nbsp;&nbsp;<img src="{{dom_signal_gif}}" id="img1" ></h3>
+      </td>
+      <td>
+
+      </td>
+      <td nowrap>
+        <h3>Interest Rate Signal:&nbsp;&nbsp;&nbsp;<img src="{{int_signal_gif}}" id="img1" ></h3>
+      </td>
+    </tr>
+
+    
+    <tr>
+      <td>
+        <div id="altair-timeseries1a"></div>
+      </td>
+      <td>
+
+      </td>
+      <td>
+        <div id="altair-timeseries2"></div>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap>
+        <h3>Inventory Level Signal:&nbsp;&nbsp;&nbsp;<img src="{{inv_signal_gif}}" id="img1" ></h3>
+      </td>
+      <td>
+
+      </td>
+      <td nowrap>
+        <h3>Price Signal:&nbsp;&nbsp;&nbsp;<img src="{{price_signal_gif}}" id="img1" ></h3>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <div id="altair-timeseries3"></div>
+      </td>
+      <td>
+
+      </td>
+      <td>
+        <div id="altair-timeseries4"></div>
+      </td>
+    </tr>
+
+  </table>
+
+  {% if chart_json is not none %}
+
+<br />
+
+
+    </div>
+<!-- Placeholder for the tooltip -->
+<div id="vis-tooltip" class="vg-tooltip"></div>
+    </div>
+<!-- Render Charts -->
+<script type="text/javascript">
+    function parse(url, div) {
+    var opt = { mode: "vega-lite",
+        renderer: "svg",
+        actions: { export: true, source: false, editor: false }
+        };
+    vegaEmbed("#" + div, url, opt, function (error, result) {
+      vegaTooltip.vegaLite(result.view, url);
+      });
+      }
+
+
+    //Parse your Json variable here
+    parse({{ chart_json | safe }}, "altair-timeseries1a")
+    parse({{ chart_json1 | safe }}, "altair-timeseries2")
+    parse({{ chart_json2 | safe }}, "altair-timeseries3")
+    parse({{ chart_json3 | safe }}, "altair-timeseries4")
+
+
+</script>
+
+  {% endif %}
+
+
+
+
+{% endblock %}
+
+<script>
+
+</script>

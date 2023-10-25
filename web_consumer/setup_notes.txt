@@ -1,0 +1,12 @@
+pip install WTForms==2.3.3
+pip install flask-wtf
+pip install email_validator
+pip install flask_sqlalchemy
+pip install Flask-reCaptcha==0.4.2
+pip install wtforms-recaptcha
+flask==1.1.2
+Flask-reCaptcha==0.4.2
+git clone https://github.com/realpython/flask-boilerplate.git
+https://python.plainenglish.io/how-to-use-google-recaptcha-with-flask-dbd79d5ea193
+https://pusher.com/tutorials/google-recaptcha-flask/
+

@@ -1,0 +1,42 @@
+<style>
+    .modal-content iframe{
+        margin: 0 auto;
+        display: block;
+    }
+</style>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 text-center">
+
+                    <iframe id="cartoonVideo"  width="800" height="560" 
+                    src="https://www.youtube.com/embed/aCTWWAeSeZk" 
+                    title="YouTube video player" rameborder="0"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+            </div>
+        </div>
+    </div>
+
+ 
+<script>
+var is_running=false;
+$(document).ready(function(){
+
+    page_not_loading();
+    /* Get iframe src attribute value i.e. YouTube video url
+    and store it in a variable */
+    var url = $("#cartoonVideo").attr('src');
+    
+
+   
+    /* Assign empty url value to the iframe src attribute when
+    modal hide, which stop the video playing */
+    $("#{{video_modal}}").on('hide.bs.modal', function(){
+
+        var memory = $(this).html(); $(this).html(memory);
+
+    });
+});
+</script>
+
+

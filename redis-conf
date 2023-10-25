@@ -1,0 +1,3 @@
+# Set the bind parameter in your configuration file
+# redis.conf
+bind 0.0.0.0

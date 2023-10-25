@@ -1,0 +1,113 @@
+{% extends 'layouts/main_no_menu_section_five_only.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<br/>
+<br/>
+
+
+<a id="section_five"></a>
+<div id="section_five_content"  class="my_content_section" data-href="section_five"></div>
+<br/>
+
+
+<div class="modal fade" id="videomodal" >
+<div class="modal-dialog modal-lg" >
+<div class="modal-content modal-lg">
+    <div class="modal-header modal-lg">
+        <h4 class="modal-title"> Lorisa Arnold, Realtor, C.B.R. Compass Real Estate
+          <button type="button" class="close" data-dismiss="modal" >X</button>
+        </h4>
+    </div>
+    <div class="modal-body modal-lg" id="video_modal_body">
+  
+    </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      
+      <div class="modal-body" >
+       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></span>
+        </button>        
+        <!-- 16:9 aspect ratio -->
+        <div class="ratio ratio-16x9">
+          <iframe class="embed-responsive-item" src="" id="video"  allowscriptaccess="always" allow="autoplay"></iframe>
+        </div>
+              
+        
+      </div>
+
+    </div>
+  </div>
+</div> 
+
+<div id="prediction_calc"></div>
+
+<script>
+
+
+
+      function refresh_popout_predictions(state,county,county_or_msa,popout="True"){
+  
+  
+            $.ajax({
+                url: '/section_five_pred',
+                type: 'post',
+                data: {state:state,county:county,county_or_msa:county_or_msa,popout:popout},
+                success: function(data){ 
+                    $('#prediction_calc').empty();                 
+                    $('#prediction_calc').html(data); 
+                    $('#prediction_calc').append(data.htmlresponse); 
+                    page_not_loading();
+                }
+            });
+            
+          };
+
+  $(document).ready(function () {
+      
+      page_loading();
+      alert("bozo")
+      //refresh_predictions("TX","Austin-Round Rock-Georgetown_TX","MSA");
+      refresh_popout_predictions("{{state}}","{{county}}","{{county_or_msa}}","True");
+
+  
+  });
+  
+  </script>
+
+
+<script>
+
+
+function render_video_modal(target_modal="video_modal_body"){
+
+page_loading();
+
+
+$.ajax({
+    url: '/videomodaldata',
+    type: 'post',
+    success: function(data){ 
+        $('#'+target_modal).html(data); 
+        $('#'+target_modal).append(data.htmlresponse);
+        $('#videomodal').modal('show'); 
+    }
+});
+};
+
+
+
+
+
+</script>  
+
+
+{% endblock %}
