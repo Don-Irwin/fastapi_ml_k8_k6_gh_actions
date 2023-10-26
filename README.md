@@ -32,6 +32,8 @@ The solution is a infrastructure as code pure-play.
 
 This has been tested on a Linux Ubuntu Server running on a INTEL/AMD64/X86 instruction set microprocessor.
 
+I would recommend a mininum of 16GB of memory to attemp to run this system.
+
 It has not been tested on Mac or OSX.  Some of the exotic port forwarding features of this system require considerable finessing to get them to work on MacOS.
 
 I have not had the time to create a distro for that environment.
@@ -44,6 +46,96 @@ This system has many pre-requisites, git, python, docker, docker-compose, miniku
 
 Press Ctrl + Click on this link; [setup_deps.sh](https://github.com/Don-Irwin/fastapi_ml_k8_k6_gh_actions/blob/main/setup_deps.sh), to open the `setup_deps.sh` shell file, which will up all of the dependencies on a "blank" server or Virtual Machine with the latest version of Ubuntu.
 
-## Pre-Requisites -- Ubuntu Script Supplied
+## The `run.sh` Bash Script
 
+The `run.sh` bash script is fairly exhaustive and orchestrates the system end-to-end.
+
+It is the entry-point for the system.
+
+## Running the System from Scratch
+
+Once the pre-requisites are installed on the system running the system end-to-end, should be straightforward.
+
+Utilize this command to clone, and run the system:
+
+* All in one shot.
+```
+git clone https://github.com/Don-Irwin/fastapi_ml_k8_k6_gh_actions && cd ./fastapi_ml_k8_k6_gh_actions && . run.sh
+
+```
+
+* Step by Step:
+```
+git clone https://github.com/Don-Irwin/fastapi_ml_k8_k6_gh_actions
+```
+then,
+```
+cd ./fastapi_ml_k8_k6_gh_actions
+```
+then,
+```
+. run.sh
+```
+
+
+
+### Happy Result
+
+If the system is able to run end-to-end, we should see this message.
+
+![Visual Overview](images/flask.png)
+
+Upon seeing this message we should be able to open:
+
+* Grafana -- in order to see the progress of the load testing (which will be running):
+   http://localhost:3000
+* The FASTAP swagger interface:
+-- IP address and port shown by script (will vary from machine to machine)
+* The Flask Web Application:
+-- IP address and port shown by script (will vary from machine to machine)
+
+
+### Error Condition
+
+If `run.sh` encounters an error condition should report it to the console and discontinue its running.
+
+## Monitoring Load Testing
+
+Peeking at `run.sh` we see that after all web interfaces are up it begins to run loadtesting:
+
+```
+echo "*********************************"
+echo "*                               *"
+echo "*  RUNNING Load testing         *"
+echo "*  Look at. ...                 *"
+echo "*  $this_grafana"
+echo "*                               *"
+echo "*********************************"
+
+. run_k6.sh
+
+```
+
+Output is sent to a file, not the screen, but once it has completed the following message should show up indicating its status:
+
+![Visual Overview](images/k6_results.png)
+
+## Running Load Testing Independently
+
+If we wish to run load testing independently we may do so, provided the system is still running.
+
+To do this, we:
+* 1. Open a new bash shell and move to that same directory.
+* 2. run the file run_k6.sh:
+```
+. run_k6.sh
+```
+
+While this is running we should be able to open grafana:
+
+[http://localhost:3000](http://localhost:3000)
+
+Doing so, we will see the system under load within the dashboard.
+
+![Visual Overview](images/grafana_dashboard.png)
 
