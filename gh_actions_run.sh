@@ -339,7 +339,6 @@ time . build_docker.sh
 cd $this_dir
 
 
-
 echo "*********************************"
 echo "*  ENDING                       *"
 echo "* Completed the docker builds   *"
