@@ -2,7 +2,7 @@
 
 ## Visual Overview
 
-![Visual Overview](artifacts/images/streaming_visualization.jpg)
+![Visual Overview](images/serve_ml.drawio.png)
 
 ## Background
 
