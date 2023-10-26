@@ -26,7 +26,7 @@ The solution is a infrastructure as code pure-play.
 
 ### What the Flask Web Application Looks Like
 
-![Visual Overview](images/fask.png)
+![Visual Overview](images/flask.png)
 
 ## Background
 
