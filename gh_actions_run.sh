@@ -296,41 +296,6 @@ docker stop ${APP_NAME}
 echo "docker rm ${APP_NAME}"
 docker rm ${APP_NAME}
 
-#kill the web_consumer docker image
-cd ./web_consumer
-source ./rm_docker_images.sh
-cd ./../
-
-
-time minikube start --kubernetes-version=v1.25.13 --memory 6921 --cpus 2  --force
-#16 gb
-#time minikube start --kubernetes-version=v1.25.13 --memory 16384 --cpus 4  --force
-
-#now set up the demo setup
-#istioctl install demo -y
-istioctl install --set profile=demo -y
-
-
-
-
-#inject prometheus
-#https://istio.io/latest/docs/ops/integrations/prometheus/
-minikube kubectl -- apply -f https://raw.githubusercontent.com/istio/istio/release-1.19/samples/addons/prometheus.yaml
-
-#inject grafana;
-#https://istio.io/latest/docs/ops/integrations/grafana/
-minikube kubectl -- apply -f https://raw.githubusercontent.com/istio/istio/release-1.19/samples/addons/grafana.yaml
-
-
-
-#Output images to the LOCAL minicube dealio -- rather than the default.
-echo "Point shell output to minikube docker"
-echo "eval $(minikube -p minikube docker-env)"
-eval $(minikube -p minikube docker-env)
-
-#build docker from the docker file
-echo "docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE}"
-time docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE} .
 
 #Now build up the web consumer into minikube
 this_dir=$(pwd)
@@ -338,179 +303,26 @@ cd ./web_consumer
 time . build_docker.sh
 cd $this_dir
 
-cd ./infra
-. delete_deployments.sh
-sleep 2
-my_all_pods=$(minikube kubectl -- get pods --all-namespaces| wc -l)
-. apply_deployments_gh_actions.sh
+
+#build docker from the docker file
+echo "docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE}"
+time docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE} .
+
+
+#kill the web_consumer docker image
+cd ./web_consumer
+source ./rm_docker_images.sh
 cd ./../
-sleep 2
-my_all_pods_after_deploy=$(minikube kubectl -- get pods --all-namespaces| wc -l)
-
-echo my_all_pods=$my_all_pods
 
 
-#Wait until all the pods
-while [ $my_all_pods_after_deploy -le $my_all_pods ]; do
-    my_all_pods_after_deploy=$(minikube kubectl -- get pods --all-namespaces| wc -l)
-    #echo my_all_pods=$my_all_pods
-    #echo my_all_pods_after_deploy=$my_all_pods_after_deploy
-    sleep 1
-done
-echo my_all_pods=$my_all_pods
-echo my_all_pods_after_deploy=$my_all_pods_after_deploy
+echo "docker stop ${APP_NAME}"
+docker stop ${APP_NAME}
+echo "docker rm ${APP_NAME}"
+docker rm ${APP_NAME}
 
-#make sure we have more pods AFTER the scripts than before.
 
 echo "*********************************"
-echo "*  ENDING                       *"
+echo "*  Docker Images Down           *"
 echo "* Docker stopping and rebuild   *"
 echo "*                               *"
 echo "*********************************"
-
-echo "**********************************"
-echo "*  LOOK AT ALL K8 PODS / SVCS    *"
-echo "**********************************"
-
-minikube kubectl -- get pods --all-namespaces
-minikube kubectl -- get services --all-namespaces
-
-echo "**********************************"
-echo "*  STARTING                      *"
-echo "* port forwarding                *"
-echo "*                                *"
-echo "* Make sure all pods are running *"
-echo "* Before issuing port forwarding *"
-echo "*                                *".
-echo "**********************************"
-
-echo $PWD
-
-echo my_all_pods=$(minikube kubectl -- get pods --namespace=w255| wc -l)
-echo $my_all_pods
-running_pods=$(minikube kubectl -- get pods --namespace=w255 --field-selector=status.phase=Running| wc -l)
-echo $running_pods
-while [ $running_pods -le $my_all_pods ]; do
-    #echo my_all_pods=$(minikube kubectl -- get pods --namespace=w255| wc -l)
-    my_all_pods=$(minikube kubectl -- get pods --namespace=w255| wc -l)
-    #echo running_pods=$(minikube kubectl -- get pods --namespace=w255 --field-selector=status.phase=Running| wc -l)
-    running_pods=$(minikube kubectl -- get pods --namespace=w255 --field-selector=status.phase=Running| wc -l)
-    let "running_pods = running_pods+1"
-    #echo running_pods=$running_pods
-
-    sleep 1
-done
-
-echo my_all_pods=$my_all_pods
-echo running_pods=$running_pods
-
-my_ticks=$(( $(date '+%s%N') / 1000000))
-
-sleep 2
-
-echo "**********************************"
-echo "*  LOOK AT ALL K8 PODS / SVCS    *"
-echo "**********************************"
-
-minikube kubectl -- get pods --all-namespaces
-minikube kubectl -- get services --all-namespaces
-
-
-echo "*********************************"
-echo "*  BEGIN                        *"
-echo "* port forwarding               *"
-echo "*                               *"
-echo "*********************************"
-
-rm output_*.txt
-
-
-echo "port-forward -n istio-system Service/grafana 3000:3000 --address='0.0.0.0' > output_grafana_$my_ticks.txt & "
-kubectl port-forward -n istio-system Service/grafana 3000:3000 --address='0.0.0.0' > output_grafana_$my_ticks.txt & 
-
-echo "port-forward -n w255 Service/frontend-ext 8000:8000 --address='0.0.0.0' > output_$my_ticks.txt & "
-kubectl port-forward -n w255 Service/frontend-ext 8000:8000 --address='0.0.0.0' > output_$my_ticks.txt & 
-
-echo "port-forward -n w255 Service/webapp 5000:5000 --address='0.0.0.0' > output_web_$my_ticks.txt & "
-kubectl port-forward -n w255 Service/webapp 5000:5000 --address='0.0.0.0' > output_web_$my_ticks.txt & 
-
-
-echo "*********************************"
-echo "*  ENDING                       *"
-echo "* port forwarding initiation    *"
-echo "*********************************"
-#cat nohup.out
-sleep 1
-
-echo "*********************************"
-echo "*                               *"
-echo "*  EXTRACTING ip address of     *"
-echo "*        load balancer          *"
-echo "*                               *"
-echo "*********************************"
-
-#kubectl -n kube-system get svc cluster-nginx-ingress-controller -o json | jq 
-
-#
-#This is the URL that we use internally to see traffic
-#minikube -n w255 service frontend --url
-#
-
-python_api_url=$(minikube -n w255 service frontend --url)
-export python_api_address=$python_api_url
-echo "python_api_address=$python_api_url"
-python setup_values.py
-
-
-
-echo "*********************************"
-echo "*                               *"
-echo "*        WAITING. ....          *"
-echo "*        API not ready          *"
-echo "*                               *"
-echo "*********************************"
-
-
-finished=false
-while ! $finished; do
-    health_status=$(curl -o /dev/null -s -w "%{http_code}\n" -X GET "${python_api_url}/health")
-    if [ $health_status == "200" ]; then
-        finished=true
-        echo "*********************************"
-        echo "*                               *"
-        echo "*        API is ready           *"
-        echo "${python_api_url}/docs"
-        echo "*                               *"
-        echo "*********************************"
-    else
-        finished=false
-    fi
-done
-echo""
-echo""
-
-webapp_url=$(minikube -n w255 service webapp --url)
-
-this_ip="localhost"
-
-echo "*********************************"
-echo "*                               *"
-echo "*  Look at web app              *"
-echo "*  Look at. ...                 *"
-echo "*  $webapp_url"
-echo "*                               *"
-echo "*********************************"
-
-
-this_grafana="http://${this_ip}:3000"
-
-echo "*********************************"
-echo "*                               *"
-echo "*  RUNNING Load testing         *"
-echo "*  Look at. ...                 *"
-echo "*  $this_grafana"
-echo "*                               *"
-echo "*********************************"
-
-
-
