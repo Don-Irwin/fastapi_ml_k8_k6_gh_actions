@@ -302,7 +302,7 @@ source ./rm_docker_images.sh
 cd ./../
 
 
-time minikube start --kubernetes-version=v1.25.13 --memory 10240 --cpus 4  --force
+time minikube start --kubernetes-version=v1.25.13 --memory 6921 --cpus 2  --force
 #16 gb
 #time minikube start --kubernetes-version=v1.25.13 --memory 16384 --cpus 4  --force
 
