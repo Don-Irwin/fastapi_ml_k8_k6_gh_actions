@@ -120,13 +120,13 @@ Upon seeing this message we should be able to open:
 
 * Grafana -- in order to see the progress of the load testing (which will be running):
     Ctrl + Click -- to open in new tab.
-   [Grafana](http://localhost:3000)
+   [Grafana http://localhost:3000](http://localhost:3000)
 * The FASTAP swagger interface:
      Ctrl + Click -- to open in new tab.
-    [FastAPI Interface](http://localhost:8000)
+    [FastAPI Interface http://localhost:8000](http://localhost:8000)
 * The Flask Web Application:
      Ctrl + Click -- to open in new tab.
-    [Flask Web Application](http://localhost:5000)
+    [Flask Web Application http://localhost:5000](http://localhost:5000)
 
 
 ### Error Condition
