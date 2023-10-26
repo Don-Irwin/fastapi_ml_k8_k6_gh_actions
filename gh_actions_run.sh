@@ -296,6 +296,41 @@ docker stop ${APP_NAME}
 echo "docker rm ${APP_NAME}"
 docker rm ${APP_NAME}
 
+#kill the web_consumer docker image
+cd ./web_consumer
+source ./rm_docker_images.sh
+cd ./../
+
+
+time minikube start --kubernetes-version=v1.25.13 --memory 10240 --cpus 4  --force
+#16 gb
+#time minikube start --kubernetes-version=v1.25.13 --memory 16384 --cpus 4  --force
+
+#now set up the demo setup
+#istioctl install demo -y
+istioctl install --set profile=demo -y
+
+
+
+
+#inject prometheus
+#https://istio.io/latest/docs/ops/integrations/prometheus/
+minikube kubectl -- apply -f https://raw.githubusercontent.com/istio/istio/release-1.19/samples/addons/prometheus.yaml
+
+#inject grafana;
+#https://istio.io/latest/docs/ops/integrations/grafana/
+minikube kubectl -- apply -f https://raw.githubusercontent.com/istio/istio/release-1.19/samples/addons/grafana.yaml
+
+
+
+#Output images to the LOCAL minicube dealio -- rather than the default.
+echo "Point shell output to minikube docker"
+echo "eval $(minikube -p minikube docker-env)"
+eval $(minikube -p minikube docker-env)
+
+#build docker from the docker file
+echo "docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE}"
+time docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE} .
 
 #Now build up the web consumer into minikube
 this_dir=$(pwd)
@@ -304,25 +339,9 @@ time . build_docker.sh
 cd $this_dir
 
 
-#build docker from the docker file
-echo "docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE}"
-time docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE} .
-
-
-#kill the web_consumer docker image
-cd ./web_consumer
-source ./rm_docker_images.sh
-cd ./../
-
-
-echo "docker stop ${APP_NAME}"
-docker stop ${APP_NAME}
-echo "docker rm ${APP_NAME}"
-docker rm ${APP_NAME}
-
 
 echo "*********************************"
-echo "*  Docker Images Down           *"
-echo "* Docker stopping and rebuild   *"
+echo "*  ENDING                       *"
+echo "* Completed the docker builds   *"
 echo "*                               *"
 echo "*********************************"
