@@ -14,9 +14,13 @@ Github actions are used to test the health of the solution upon check-in, simula
 
 The solution is a infrastructure as code pure-play.
 
-## Visual Overview
+## Visual Overviews
 
-### The Cluster Setup
+### Minikube Setup
+
+![Visual Overview](images/minikube_setup.png)
+
+### Istio Proxy Sidecar
 
 ![Visual Overview](images/serve_ml.drawio.png)
 
@@ -24,9 +28,6 @@ The solution is a infrastructure as code pure-play.
 
 ![Visual Overview](images/fast_api.png)
 
-### What the Flask Web Application Looks Like
-
-![Visual Overview](images/flask.png)
 
 ## System Requirements
 
