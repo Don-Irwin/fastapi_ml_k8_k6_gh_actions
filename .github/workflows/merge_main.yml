@@ -47,9 +47,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install poetry==${{ matrix.poetry-version }}
 
+      #setup system dependencies
+      - name: Install dependencies
+        run: | 
+          cd ./
+          sudo bash ./setup_deps.sh
 
       #get into lab 4
-      - name: Install dependencies
+      - name: dependencies of the application only
         run: | 
           cd ./
           poetry install --no-interaction --no-root
