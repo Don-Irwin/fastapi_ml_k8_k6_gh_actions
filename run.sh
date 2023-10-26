@@ -350,10 +350,12 @@ my_all_pods_after_deploy=$(minikube kubectl -- get pods --all-namespaces| wc -l)
 echo my_all_pods=$my_all_pods
 
 
+#Wait until all the pods
 while [ $my_all_pods_after_deploy -le $my_all_pods ]; do
     my_all_pods_after_deploy=$(minikube kubectl -- get pods --all-namespaces| wc -l)
     #echo my_all_pods=$my_all_pods
     #echo my_all_pods_after_deploy=$my_all_pods_after_deploy
+    sleep 1
 done
 echo my_all_pods=$my_all_pods
 echo my_all_pods_after_deploy=$my_all_pods_after_deploy
@@ -487,13 +489,6 @@ done
 echo""
 echo""
 
-echo "*********************************"
-echo "*                               *"
-echo "*        grafana is ready           *"
-echo "http://localhost:3000"
-echo "*                               *"
-echo "*********************************"
-
 webapp_url=$(minikube -n w255 service webapp --url)
 
 this_ip="localhost"
@@ -532,6 +527,17 @@ echo "*  COMPLETED SETUP              *"
 echo "*                               *"
 echo "*********************************"
 
+echo "*********************************"
+echo "*                               *"
+echo "*  Press Ctrl + C to exit       *"
+echo "*                               *"
+echo "*                               *"
+echo "*  Once exit is complete run:   *"
+echo "*       . td.sh                 *"
+echo "*                               *"
+echo "*  This tears down the system   *"
+echo "*                               *"
+echo "*********************************"
 
 #because there are background port forwarding commands running continually
 #this will never exit.

@@ -38,9 +38,12 @@ I have not had the time to create a distro for that environment.
 
 If you wish to run this, but do not have a suitable computer, it has been tested on AWS EC2 Instances, Azure virtual machines, and GCP virtual machines.
 
-## Pre-Requisites -- Ubuntu Script Supplied
+## Installing Pre-Requisites 
 
-This project requires many pre-requisites, git, python, docker, docker-compose, minikube, istio, kubectl, bash and others.
+This system has many pre-requisites, git, python, docker, docker-compose, minikube, istio, kubectl, bash and others.
 
 Press Ctrl + Click on this link; [setup_deps.sh](https://github.com/Don-Irwin/fastapi_ml_k8_k6_gh_actions/blob/main/setup_deps.sh), to open the `setup_deps.sh` shell file, which will up all of the dependencies on a "blank" server or Virtual Machine with the latest version of Ubuntu.
+
+## Pre-Requisites -- Ubuntu Script Supplied
+
 
