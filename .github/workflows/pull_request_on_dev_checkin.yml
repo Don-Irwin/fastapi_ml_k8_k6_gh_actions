@@ -1,0 +1,14 @@
+name: Pull Request Action
+on:
+  push:
+    branches:
+      - dev/*
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create pull request
+        run: gh pr create -B main -H dev --title 'Merge dev into main' --body 'Created by Github action'
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
