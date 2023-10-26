@@ -6,7 +6,7 @@
         echo "User $username already exists."
     else
         echo "User $username does not exist, creating user..."
-        sudo useradd --disabled-password "$username"
+        sudo adduser --disabled-password "$username"
         echo "User $username has been created with no password."
     fi
 
