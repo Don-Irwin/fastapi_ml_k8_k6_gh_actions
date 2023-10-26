@@ -2,7 +2,7 @@ name: Pull Request Action
 on:
   push:
     branches:
-      - dev/*
+      - dev
 
 jobs:
   create-pull-request:
