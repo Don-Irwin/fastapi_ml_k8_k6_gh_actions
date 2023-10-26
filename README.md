@@ -15,6 +15,7 @@
     - [Error Condition](#error-condition)
   - [Monitoring Load Testing](#monitoring-load-testing)
   - [Running Load Testing Independently](#running-load-testing-independently)
+  - [Github Actions Testing](#github-actions-testing)
 
 <!-- /TOC -->
 
@@ -193,4 +194,5 @@ Doing so, we will see the system under load within the dashboard.
 
 ![Visual Overview](images/grafana_dashboard.png)
 
+## Github Actions Testing
 
