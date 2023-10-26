@@ -342,7 +342,7 @@ cd ./infra
 . delete_deployments.sh
 sleep 2
 my_all_pods=$(minikube kubectl -- get pods --all-namespaces| wc -l)
-. apply_deployments.sh
+. apply_deployments_gh_actions.sh
 cd ./../
 sleep 2
 my_all_pods_after_deploy=$(minikube kubectl -- get pods --all-namespaces| wc -l)
