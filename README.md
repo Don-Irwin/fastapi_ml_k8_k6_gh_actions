@@ -58,9 +58,25 @@ Once the pre-requisites are installed on the system running the system end-to-en
 
 Utilize this command to clone, and run the system:
 
+* All in one shot.
 ```
+git clone https://github.com/Don-Irwin/fastapi_ml_k8_k6_gh_actions && cd ./fastapi_ml_k8_k6_gh_actions && . run.sh
 
 ```
+
+* Step by Step:
+```
+git clone https://github.com/Don-Irwin/fastapi_ml_k8_k6_gh_actions
+```
+then,
+```
+cd ./fastapi_ml_k8_k6_gh_actions
+```
+then,
+```
+. run.sh
+```
+
 
 
 ### Happy Result
