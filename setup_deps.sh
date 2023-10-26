@@ -49,4 +49,4 @@
     chmod -R 777 /var/www/html/
 
     usermod -aG docker ubuntu
-    newgrp docker
+    
