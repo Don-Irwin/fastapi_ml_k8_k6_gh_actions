@@ -1,8 +1,34 @@
 # Serving ML Models With FASTAPI, Redis, Kubernetes, Itsio, Grafana, and Consuming API within Flask
 
+This system is designed to demonstrate how to serve ML Models utilizing FASTAPI within docker containers built into a Kubernetes environment.
+
+Istio, Prometheus, and are used Grafana within the Kubernetes clster in order to provide visibility to the inner workings of the cluster and its health.
+
+A Flask Web Application is made available in order to demostrate to human users how to consume this API.
+
+The system includes automated Load Testing of the Kubernetes Pod utilizing K6.
+
+Github actions are used to test the health of the solution upon check-in, simulating a production CI/CD health check system.
+
+The solution is a infrastructure as code pure-play.
+
 ## Visual Overview
 
+### The Tech Stack
+
+![Visual Overview](images/tech_stack.png)
+
+### The Cluster Setup
+
 ![Visual Overview](images/serve_ml.drawio.png)
+
+### What Fast API Looks Like
+
+![Visual Overview](images/fast_api.png)
+
+### What the Flask Web Application Looks Like
+
+![Visual Overview](images/fask.png)
 
 ## Background
 
