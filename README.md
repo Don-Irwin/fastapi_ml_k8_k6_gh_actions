@@ -193,3 +193,4 @@ Doing so, we will see the system under load within the dashboard.
 
 ![Visual Overview](images/grafana_dashboard.png)
 
+
