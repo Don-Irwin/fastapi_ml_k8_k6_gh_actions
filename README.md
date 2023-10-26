@@ -28,6 +28,10 @@ The solution is a infrastructure as code pure-play.
 
 ![Visual Overview](images/fast_api.png)
 
+### What the Flask Web Application Looks Like
+
+![Visual Overview](images/flask.png)
+
 
 ## System Requirements
 
@@ -115,11 +119,14 @@ If the system is able to run end-to-end, we should see this message.
 Upon seeing this message we should be able to open:
 
 * Grafana -- in order to see the progress of the load testing (which will be running):
-   http://localhost:3000
+    Ctrl + Click -- to open in new tab.
+   [Grafana](http://localhost:3000)
 * The FASTAP swagger interface:
--- IP address and port shown by script (will vary from machine to machine)
+     Ctrl + Click -- to open in new tab.
+    [FastAPI Interface](http://localhost:8000)
 * The Flask Web Application:
--- IP address and port shown by script (will vary from machine to machine)
+     Ctrl + Click -- to open in new tab.
+    [Flask Web Application](http://localhost:5000)
 
 
 ### Error Condition
