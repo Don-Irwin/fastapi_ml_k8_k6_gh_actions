@@ -302,7 +302,7 @@ source ./rm_docker_images.sh
 cd ./../
 
 
-time minikube start --kubernetes-version=v1.25.13 --memory 10240 --cpus 4  --force
+time minikube start --kubernetes-version=v1.25.13 --memory 6921 --cpus 2  --force
 #16 gb
 #time minikube start --kubernetes-version=v1.25.13 --memory 16384 --cpus 4  --force
 
@@ -342,7 +342,7 @@ cd ./infra
 . delete_deployments.sh
 sleep 2
 my_all_pods=$(minikube kubectl -- get pods --all-namespaces| wc -l)
-. apply_deployments.sh
+. apply_deployments_gh_actions.sh
 cd ./../
 sleep 2
 my_all_pods_after_deploy=$(minikube kubectl -- get pods --all-namespaces| wc -l)
