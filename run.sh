@@ -9,13 +9,18 @@
 #https://minikube.sigs.k8s.io/docs/handbook/accessing/
 #
 
+echo "*************************************"
+echo "* Serving ML with K8s, FASTAPI      *"
+echo "* Based in part off a project below *"
+echo "*************************************"
+
+
 
 echo "**********************************"
 echo "* U.C. Berkeley MIDS W255        *"
 echo "* Summer 2022                    *"
 echo "* Instructor: James York Winegar *"
 echo "* Student: Don Irwin             *"
-echo "* Lab 3 Submission               *"
 echo "**********************************"
 
 
