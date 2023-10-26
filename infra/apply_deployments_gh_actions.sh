@@ -31,3 +31,4 @@ kubectl apply -f istio-gateway-prediction.yaml
 # kubectl apply -f prediction-grafana.yaml
 # echo "kubectl apply -f telemetry.yaml"
 # kubectl apply -f telemetry.yaml
+#
