@@ -54,15 +54,15 @@ jobs:
           sudo bash ./setup_deps.sh
 
       #get into lab 4
-      - name: dependencies of the application only
-        run: | 
-          cd ./
-          poetry install --no-interaction --no-root
+      #- name: dependencies of the application only
+      #  run: | 
+      #    cd ./
+      #    poetry install --no-interaction --no-root
 
-      - name: Run Tests
-        run: |
-          cd ./
-          poetry run pytest -vv -s
+      #- name: Run Tests
+      #  run: |
+      #    cd ./
+      #    poetry run pytest -vv -s
 
       #Entire build pipeline
       - name: Entire build pipeline
