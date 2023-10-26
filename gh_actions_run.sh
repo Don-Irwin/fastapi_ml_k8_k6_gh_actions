@@ -11,25 +11,6 @@
 
 
 echo "**********************************"
-echo "* Architect: Don Irwin           "
-echo "* Primary difference between     "
-echo "* This and run.sh is  "
-echo "* The kubectl files are wrapped for running in non-interactive shell"
-echo "* I.E.:"
-echo "*\$(minikube kubectl -- get pods --all-namespaces| wc -l)"
-echo "* RATHER THAN: "
-echo "*\$(kubectl get pods --all-namespaces| wc -l)"
-echo "* "
-echo "**********************************"
-
-
-echo "**********************************"
-echo "* Loosely based on the project   *"
-echo "* Below                          *"
-echo "**********************************"
-
-
-echo "**********************************"
 echo "* U.C. Berkeley MIDS W255        *"
 echo "* Summer 2022                    *"
 echo "* Instructor: James York Winegar *"
@@ -132,8 +113,10 @@ else
     echo "*********************************"
     curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.19.0 TARGET_ARCH=x86_64 sh -
     chmod +x  istio-1.19.0
+    echo 
     mkdir -p ~/.local/bin
     mv ./istio-1.19.0 ~/.local/bin/istio-1.19.0
+    export PATH=$PATH:~/.local/bin/istio-1.19.0/bin
     echo "PATH=$PATH:~/.local/bin/istio-1.19.0/bin">>~/.bashrc
     source ~/.bashrc
 
@@ -265,17 +248,17 @@ echo "*********************************"
 echo "*********************************"
 echo "*                               *"
 echo "* Running app locally poetry    *"
-echo "*   poetry run pytest -vv -s    *"
+echo "*   poetry run pytest -vv -s --ignore=./web_consumer   *"
 echo "*                               *"
 echo "*********************************"
 
-poetry run pytest -vv -s
+poetry run pytest -vv -s --ignore=./web_consumer
 if [ $? -ne 0 ]; then
 
     echo "*********************************"
     echo "*  FINISHED                     *"
     echo "* Running app locally poetry    *"
-    echo "*   poetry run pytest -vv -s    *"
+    echo "*   poetry run pytest -vv -s --ignore=./web_consumer   *"
     echo "*  FAILURE                      *"
     echo "*********************************"
     return
@@ -285,7 +268,7 @@ fi
 echo "*********************************"
 echo "*  FINISHED                     *"
 echo "* Running app locally poetry    *"
-echo "*   poetry run pytest -vv -s    *"
+echo "*   poetry run pytest -vv -s  --ignore=./web_consumer  *"
 echo "*  SUCCESS                      *"
 echo "*********************************"
 #stop the image if it was running
@@ -313,7 +296,15 @@ docker stop ${APP_NAME}
 echo "docker rm ${APP_NAME}"
 docker rm ${APP_NAME}
 
-time minikube start --kubernetes-version=v1.25.13 --memory 16384 --cpus 4  --force
+#kill the web_consumer docker image
+cd ./web_consumer
+source ./rm_docker_images.sh
+cd ./../
+
+
+time minikube start --kubernetes-version=v1.25.13 --memory 10240 --cpus 4  --force
+#16 gb
+#time minikube start --kubernetes-version=v1.25.13 --memory 16384 --cpus 4  --force
 
 #now set up the demo setup
 #istioctl install demo -y
@@ -341,10 +332,11 @@ eval $(minikube -p minikube docker-env)
 echo "docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE}"
 time docker build -t ${IMAGE_NAME} -f ${DOCKER_FILE} .
 
-#echo "docker run -d --net ${NET_NAME} --name ${APP_NAME} -p 8000:8000 ${IMAGE_NAME} "
-#docker run -d --net ${NET_NAME} --name ${APP_NAME} -p 8000:8000 ${IMAGE_NAME} 
-
-
+#Now build up the web consumer into minikube
+this_dir=$(pwd)
+cd ./web_consumer
+time . build_docker.sh
+cd $this_dir
 
 cd ./infra
 . delete_deployments.sh
@@ -358,10 +350,12 @@ my_all_pods_after_deploy=$(minikube kubectl -- get pods --all-namespaces| wc -l)
 echo my_all_pods=$my_all_pods
 
 
+#Wait until all the pods
 while [ $my_all_pods_after_deploy -le $my_all_pods ]; do
     my_all_pods_after_deploy=$(minikube kubectl -- get pods --all-namespaces| wc -l)
     #echo my_all_pods=$my_all_pods
     #echo my_all_pods_after_deploy=$my_all_pods_after_deploy
+    sleep 1
 done
 echo my_all_pods=$my_all_pods
 echo my_all_pods_after_deploy=$my_all_pods_after_deploy
@@ -374,7 +368,12 @@ echo "* Docker stopping and rebuild   *"
 echo "*                               *"
 echo "*********************************"
 
+echo "**********************************"
+echo "*  LOOK AT ALL K8 PODS / SVCS    *"
+echo "**********************************"
 
+minikube kubectl -- get pods --all-namespaces
+minikube kubectl -- get services --all-namespaces
 
 echo "**********************************"
 echo "*  STARTING                      *"
@@ -405,24 +404,17 @@ done
 echo my_all_pods=$my_all_pods
 echo running_pods=$running_pods
 
-#20230914 don irwin -- disabling below in favor of istio
-echo "set up the dashboard"
-echo "note this can be done in yaml"
-#kubectl create serviceaccount k8sadmin -n kube-system
-#kubectl create clusterrolebinding k8sadmin --clusterrole=cluster-admin --serviceaccount=kube-system:k8sadmin
-#my_token=kubectl -n kube-system describe secret $(sudo kubectl -n kube-system get secret | (grep k8sadmin || echo "$_") | awk '{print $1}') | grep token: | awk '{print $2}'
-#echo $my_token>token.txt
-
-#kubectl proxy --address='0.0.0.0' --disable-filter=true>/dev/null &
-#proxy_pid=$!
-#minikube dashboard --url >/dev/null&
-#echo "Open this creature:"
-#echo "http://localhost:8001:/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/"
-
-
 my_ticks=$(( $(date '+%s%N') / 1000000))
 
 sleep 2
+
+echo "**********************************"
+echo "*  LOOK AT ALL K8 PODS / SVCS    *"
+echo "**********************************"
+
+minikube kubectl -- get pods --all-namespaces
+minikube kubectl -- get services --all-namespaces
+
 
 echo "*********************************"
 echo "*  BEGIN                        *"
@@ -432,89 +424,22 @@ echo "*********************************"
 
 rm output_*.txt
 
-#consult:
-#https://istio.io/latest/docs/setup/platform-setup/minikube/
-#
-#https://minikube.sigs.k8s.io/docs/handbook/accessing/
 
-#return
-
-# echo "port-forward -n w255 Service/frontend 8000:8000 --address='0.0.0.0' > output_$my_ticks.txt & "
-# kubectl port-forward -n w255 Service/frontend 8000:8000 --address='0.0.0.0' > output_$my_ticks.txt & 
-
-
-# while ${prompt_for_minikube}; do
-#         echo "*********************************"
-#         echo "                               "
-#         echo " We are about to run the command "
-#         echo "                               "  
-#         echo "Starting the port forwarding -- this will end the process"
-#         echo "nohup minikube tunnel &        "      
-#         echo "                               "
-#         echo "Special settings need to be in place"
-#         echo "                               "
-#         echo "If they are not in place       "
-#         echo "This needs to be run in a new  "
-#         echo "Window under sudo             "
-#         echo "See the following URLs:        "
-#         echo "https://minikube.sigs.k8s.io/docs/handbook/accessing/"
-#         echo "https://superuser.com/questions/1328452/sudoers-nopasswd-for-single-executable-but-allowing-others"
-#         echo "                               "
-#         echo "                               "
-#         echo " DO YOU HAVE NOPASSWD SET UP   "
-#         echo " FOR commands \"ip\" and \"route\"          "
-#         echo "                               "
-#         echo " If run this in a separate terminal:"
-#         echo "\"minikube tunnel "        "      
-#         echo "  Then Answer \"n"         "
-
-#         echo "                               "
-
-#         echo "*********************************"
-#         while true; do
-#             read -p "Do you have permissions set up? [y/n]:" yn
-#             case $yn in
-#                 [Yy]* ) do_minikube_tunnel=1;break;;
-#                 [Nn]* ) do_minikube_tunnel=0;break;;
-#                 * ) echo "Please answer \"y\" or \"n\".";;
-#             esac
-#         done        
-# break
- 
-# done
-
-do_minikube_tunnel=1
-if [[ "$do_minikube_tunnel" -eq 1 ]]
-then
-echo "*********************************"
-echo "* running:                      *"
-echo "*nohup minikube tunnel &        *"
-echo "*                               *"
-echo "*********************************"
-echo "Starting the port forwarding"
-rm nohup.out
-sudo nohup minikube tunnel &
-
-port_forwarding_pid=$!
-
-fi
-
-
-
-echo "* port_forwarding_pid=$port_forwarding_pid*"
-
-
-echo "port-forward -n istio-system Service/grafana 3000:3000 --address='0.0.0.0' > output_$my_ticks.txt & "
+echo "port-forward -n istio-system Service/grafana 3000:3000 --address='0.0.0.0' > output_grafana_$my_ticks.txt & "
 kubectl port-forward -n istio-system Service/grafana 3000:3000 --address='0.0.0.0' > output_grafana_$my_ticks.txt & 
 
-sleep 10
+echo "port-forward -n w255 Service/frontend-ext 8000:8000 --address='0.0.0.0' > output_$my_ticks.txt & "
+kubectl port-forward -n w255 Service/frontend-ext 8000:8000 --address='0.0.0.0' > output_$my_ticks.txt & 
+
+echo "port-forward -n w255 Service/webapp 5000:5000 --address='0.0.0.0' > output_web_$my_ticks.txt & "
+kubectl port-forward -n w255 Service/webapp 5000:5000 --address='0.0.0.0' > output_web_$my_ticks.txt & 
+
 
 echo "*********************************"
 echo "*  ENDING                       *"
-echo "* port forwarding               *"
-echo "* port_forwarding_pid=$port_forwarding_pid*"
+echo "* port forwarding initiation    *"
 echo "*********************************"
-cat nohup.out
+#cat nohup.out
 sleep 1
 
 echo "*********************************"
@@ -526,9 +451,14 @@ echo "*********************************"
 
 #kubectl -n kube-system get svc cluster-nginx-ingress-controller -o json | jq 
 
-python_api_address=$(minikube kubectl -- -n w255 get svc frontend -o json | jq -r ".status.loadBalancer.ingress[0].ip")
-export python_api_address=$python_api_address
+#
+#This is the URL that we use internally to see traffic
+#minikube -n w255 service frontend --url
+#
 
+python_api_url=$(minikube -n w255 service frontend --url)
+export python_api_address=$python_api_url
+echo "python_api_address=$python_api_url"
 python setup_values.py
 
 
@@ -543,13 +473,13 @@ echo "*********************************"
 
 finished=false
 while ! $finished; do
-    health_status=$(curl -o /dev/null -s -w "%{http_code}\n" -X GET "http://${python_api_address}:8000/health")
+    health_status=$(curl -o /dev/null -s -w "%{http_code}\n" -X GET "${python_api_url}/health")
     if [ $health_status == "200" ]; then
         finished=true
         echo "*********************************"
         echo "*                               *"
         echo "*        API is ready           *"
-        echo "http://${python_api_address}:8000/docs"
+        echo "${python_api_url}/docs"
         echo "*                               *"
         echo "*********************************"
     else
@@ -559,35 +489,28 @@ done
 echo""
 echo""
 
+webapp_url=$(minikube -n w255 service webapp --url)
+
+this_ip="localhost"
+
 echo "*********************************"
 echo "*                               *"
-echo "*        grafana is ready           *"
-echo "http://localhost:3000"
+echo "*  Look at web app              *"
+echo "*  Look at. ...                 *"
+echo "*  $webapp_url"
 echo "*                               *"
 echo "*********************************"
 
 
+this_grafana="http://${this_ip}:3000"
 
 echo "*********************************"
 echo "*                               *"
 echo "*  RUNNING Load testing         *"
+echo "*  Look at. ...                 *"
+echo "*  $this_grafana"
 echo "*                               *"
 echo "*********************************"
-
-. run_k6.sh
-
-#this shell expots a do_exit value
-. do_exit.sh
-if [[ "$do_exit" -eq 1 ]]
-then
-cd ./infra
-. delete_deployments.sh
-cd ./../
-sudo kill $port_forwarding_pid
-minikube stop
-export W255_UP=0
-return
-fi
 
 
 
