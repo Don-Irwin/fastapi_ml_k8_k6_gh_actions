@@ -19,8 +19,8 @@
     apt install curl -y
 
     docker ps >/dev/null
-
     let "$all_deps=$all_deps+$?"
+    docker ps >/dev/null
     if [ $? -eq 0 ]; then
         echo "docker installed"
     else
@@ -29,6 +29,7 @@
 
     docker-compose --help >/dev/null
     let "$all_deps=$all_deps+$?"
+    docker-compose --help >/dev/null
     if [ $? -eq 0 ]; then
 
         echo "docker-compose installed"
@@ -38,6 +39,7 @@
 
     git --help >/dev/null
     let "$all_deps=$all_deps+$?"
+    git --help >/dev/null
     if [ $? -eq 0 ]; then
 
         echo "git installed"
@@ -50,6 +52,7 @@
 
     poetry --version >/dev/null
     let "$all_deps=$all_deps+$?"
+    poetry --version >/dev/null    
     if [ $? -eq 0 ]; then
 
         echo "poetry installed"
@@ -60,6 +63,7 @@
 
     minikube --help >/dev/null
     let "$all_deps=$all_deps+$?"
+    minikube --help >/dev/null
     if [ $? -eq 0 ]; then
 
         echo "minikube installed"
@@ -71,6 +75,7 @@
 
     k6 --help >/dev/null
     let "$all_deps=$all_deps+$?"
+    k6 --help >/dev/null
     if [ $? -eq 0 ]; then
 
         echo "k6 installed"
@@ -82,6 +87,7 @@
 
     istioctl --help >/dev/null
     let "$all_deps=$all_deps+$?"
+    istioctl --help >/dev/null
     if [ $? -eq 0 ]; then
 
         echo "istioctl installed"
@@ -100,6 +106,7 @@
 
     kubectl --help >/dev/null
     let "$all_deps=$all_deps+$?"
+    kubectl --help >/dev/null
     if [ $? -eq 0 ]; then
 
         echo "kubectl installed"
@@ -111,6 +118,7 @@
 
     nginx -v >/dev/null
     let "$all_deps=$all_deps+$?"
+    nginx -v >/dev/null
     if [ $? -eq 0 ]; then
         echo "nginx installed"
     else
@@ -131,5 +139,7 @@
         echo " to see if this corrects the issue."
         echo "******************************"
     else
-
+        echo "******************************"
+        echo " All Dependencies have been installed."
+        echo "******************************"
     fi
