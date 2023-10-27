@@ -3,7 +3,7 @@
 - [Serving ML Models With FASTAPI, Redis, Kubernetes, Itsio, Grafana, and Consuming API within Flask](#serving-ml-models-with-fastapi-redis-kubernetes-itsio-grafana-and-consuming-api-within-flask)
   - [Visual Overviews](#visual-overviews)
     - [Minikube Setup](#minikube-setup)
-    - [Istio Proxy Sidecar](#istio-proxy-sidecar)
+    - [Istio Sidecar Container and Envoy Proxy](#istio-sidecar-container-and-envoy-proxy)
     - [What Fast API Looks Like](#what-fast-api-looks-like)
     - [What the Flask Web Application Looks Like](#what-the-flask-web-application-looks-like)
   - [System Requirements](#system-requirements)
@@ -23,9 +23,9 @@
 
 ![Visual Overview](images/tech_stack.png)
 
-This system is designed to demonstrate how to serve ML Models utilizing FASTAPI within docker containers built into a Kubernetes environment.
+This system is designed to demonstrate how to serve ML Models utilizing FASTAPI within docker containers served out of a Kubernetes cluster (We use minikube for this demo).
 
-Istio, Prometheus, and are used Grafana within the Kubernetes clster in order to provide visibility to the inner workings of the cluster and its health.
+Istio, Prometheus, and Grafana are used  within the Kubernetes clster in order to provide visibility to the inner workings of the cluster and its health.
 
 A Flask Web Application is made available in order to demostrate to human users how to consume this API.
 
@@ -41,7 +41,7 @@ The solution is a infrastructure as code pure-play.
 
 ![Visual Overview](images/minikube_setup.png)
 
-### Istio Proxy Sidecar
+### Istio Sidecar Container and Envoy Proxy
 
 ![Visual Overview](images/serve_ml.drawio.png)
 
@@ -195,4 +195,12 @@ Doing so, we will see the system under load within the dashboard.
 ![Visual Overview](images/grafana_dashboard.png)
 
 ## Github Actions Testing
+
+This repo includes a custom github action.
+
+This custom github action does the following when a pull request is created within the `dev` branch:
+
+* Tests the dependency installation scripts.
+* Tests the docker builds.
+* Tests the minikube deployments
 
