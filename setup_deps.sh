@@ -123,3 +123,14 @@
     chmod -R 777 /var/www/html/
 
     usermod -aG docker ubuntu
+
+    if [ $all_deps -ne 0 ]; then
+        echo "******************************"
+        echo " not all dependencies have been installed"
+        echo " re-run . setup_deps.sh"
+        echo " to see if this corrects the issue."
+        echo "******************************"
+    else
+        #make this last
+        apt install nginx -y
+    fi
