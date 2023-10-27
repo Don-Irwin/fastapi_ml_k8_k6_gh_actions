@@ -1,3 +1,24 @@
+<!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
+
+- [Serving ML Models With FASTAPI, Redis, Kubernetes, Itsio, Grafana, and Consuming API within Flask](#serving-ml-models-with-fastapi-redis-kubernetes-itsio-grafana-and-consuming-api-within-flask)
+  - [Visual Overviews](#visual-overviews)
+    - [Minikube Setup](#minikube-setup)
+    - [Istio Proxy Sidecar](#istio-proxy-sidecar)
+    - [What Fast API Looks Like](#what-fast-api-looks-like)
+    - [What the Flask Web Application Looks Like](#what-the-flask-web-application-looks-like)
+  - [System Requirements](#system-requirements)
+  - [Installing Pre-Requisites](#installing-pre-requisites)
+    - [Script for Automated Install](#script-for-automated-install)
+  - [The `run.sh` Bash Script](#the-runsh-bash-script)
+  - [Running the System from Scratch](#running-the-system-from-scratch)
+    - [Happy Result](#happy-result)
+    - [Error Condition](#error-condition)
+  - [Monitoring Load Testing](#monitoring-load-testing)
+  - [Running Load Testing Independently](#running-load-testing-independently)
+  - [Github Actions Testing](#github-actions-testing)
+
+<!-- /TOC -->
+
 # Serving ML Models With FASTAPI, Redis, Kubernetes, Itsio, Grafana, and Consuming API within Flask
 
 ![Visual Overview](images/tech_stack.png)
@@ -45,7 +66,7 @@ I have not had the time to create a distro for that environment.
 
 If you wish to run this, but do not have a suitable computer, it has been tested on AWS EC2 Instances, Azure virtual machines, and GCP virtual machines.
 
-## Installing Pre-Requisites 
+## Installing Pre-Requisites
 
 This system has many pre-requisites, git, python, docker, docker-compose, minikube, istio, kubectl, bash and others.
 
@@ -172,4 +193,6 @@ While this is running we should be able to open grafana:
 Doing so, we will see the system under load within the dashboard.
 
 ![Visual Overview](images/grafana_dashboard.png)
+
+## Github Actions Testing
 
