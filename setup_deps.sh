@@ -19,16 +19,17 @@
     apt install curl -y
 
     docker ps >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+
+    let "$all_deps=$all_deps+$?"
+    if [ $? -eq 0 ]; then
         echo "docker installed"
     else
         apt install docker -y
     fi
 
     docker-compose --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    if [ $? -eq 0 ]; then
 
         echo "docker-compose installed"
     else
@@ -36,8 +37,8 @@
     fi
 
     git --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    if [ $? -eq 0 ]; then
 
         echo "git installed"
     else
@@ -48,8 +49,8 @@
      apt install python-is-python3 -y && apt install nano -y
 
     poetry --version >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    if [ $? -eq 0 ]; then
 
         echo "poetry installed"
     else
@@ -58,8 +59,8 @@
     fi
 
     minikube --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    if [ $? -eq 0 ]; then
 
         echo "minikube installed"
     else
@@ -69,8 +70,8 @@
     fi
 
     k6 --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    if [ $? -eq 0 ]; then
 
         echo "k6 installed"
     else
@@ -80,8 +81,8 @@
 
 
     istioctl --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    if [ $? -eq 0 ]; then
 
         echo "istioctl installed"
     else
@@ -98,8 +99,8 @@
 
 
     kubectl --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    if [ $? -eq 0 ]; then
 
         echo "kubectl installed"
     else
@@ -109,8 +110,8 @@
 
 
     nginx -v >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    if [ $? -eq 0 ]; then
         echo "nginx installed"
     else
         #make this last
@@ -130,6 +131,5 @@
         echo " to see if this corrects the issue."
         echo "******************************"
     else
-        #make this last
-        apt install nginx -y
+
     fi
