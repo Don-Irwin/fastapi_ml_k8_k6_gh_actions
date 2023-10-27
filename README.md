@@ -205,8 +205,19 @@ The YML for this workflow is located at:
 This custom github action does the following when a pull request is created from the branch `dev` into the branch `main`:
 
 * Tests the dependency installation scripts.
+* Tests the core functionality of the ML application.
 * Tests the docker builds.
-* Tests the minikube deployments
+* Tests the minikube deployments.
 
+Below is an example of checks being run at the time of creating a pull request from the branch `dev` into the branch `main`:
 
+![Example of pull request having workflow executed against it.](images/github_acctions_pull_request.png)
+
+Below is an example of the test failing:
+
+![Below is an example of the test failing.](images/github_acctions_error_condition.png)
+
+Below is an example of the test succeeding:
+
+![Below is an example of the test succeeding.](images/github_acctions_success_condition.png)
 
