@@ -1,5 +1,4 @@
-# Don Irwin Fast API ML K8 K6 github actions
-name: Don Irwin Fast API ML K8 K6 github actions
+name: (Ubuntu) Test Environment Setup and Application on
 
 # Controls when the workflow will run
 on: 
