@@ -19,6 +19,7 @@
   - [Monitoring Load Testing](#monitoring-load-testing)
   - [Running Load Testing Independently](#running-load-testing-independently)
   - [Using Github Actions to Test the System](#using-github-actions-to-test-the-system)
+  - [Tearing Down The System After Use](#tearing-down-the-system-after-use)
 
 <!-- /TOC -->
 
@@ -223,4 +224,12 @@ Below is an example of the test failing:
 Below is an example of the test succeeding:
 
 ![Below is an example of the test succeeding.](images/github_acctions_success_condition.png)
+
+## Tearing Down The System After Use
+
+Once the system has completed its load testing we should see this message.
+
+![Below is an example of the test succeeding.](images/my_teardown.png)
+
+As the message instructs, we can press Ctrl + C, then we run the script `td.sh` -- this will tear down the system and turn off minikube.
 
