@@ -19,16 +19,18 @@
     apt install curl -y
 
     docker ps >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    docker ps >/dev/null
+    if [ $? -eq 0 ]; then
         echo "docker installed"
     else
         apt install docker -y
     fi
 
     docker-compose --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    docker-compose --help >/dev/null
+    if [ $? -eq 0 ]; then
 
         echo "docker-compose installed"
     else
@@ -36,8 +38,9 @@
     fi
 
     git --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    git --help >/dev/null
+    if [ $? -eq 0 ]; then
 
         echo "git installed"
     else
@@ -48,8 +51,9 @@
      apt install python-is-python3 -y && apt install nano -y
 
     poetry --version >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    poetry --version >/dev/null    
+    if [ $? -eq 0 ]; then
 
         echo "poetry installed"
     else
@@ -58,8 +62,9 @@
     fi
 
     minikube --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    minikube --help >/dev/null
+    if [ $? -eq 0 ]; then
 
         echo "minikube installed"
     else
@@ -69,8 +74,9 @@
     fi
 
     k6 --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    k6 --help >/dev/null
+    if [ $? -eq 0 ]; then
 
         echo "k6 installed"
     else
@@ -80,8 +86,9 @@
 
 
     istioctl --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    istioctl --help >/dev/null
+    if [ $? -eq 0 ]; then
 
         echo "istioctl installed"
     else
@@ -98,8 +105,9 @@
 
 
     kubectl --help >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    kubectl --help >/dev/null
+    if [ $? -eq 0 ]; then
 
         echo "kubectl installed"
     else
@@ -109,8 +117,9 @@
 
 
     nginx -v >/dev/null
-    all_deps=$?
-    if [ $all_deps -eq 0 ]; then
+    let "$all_deps=$all_deps+$?"
+    nginx -v >/dev/null
+    if [ $? -eq 0 ]; then
         echo "nginx installed"
     else
         #make this last
@@ -130,6 +139,7 @@
         echo " to see if this corrects the issue."
         echo "******************************"
     else
-        #make this last
-        apt install nginx -y
+        echo "******************************"
+        echo " All Dependencies have been installed."
+        echo "******************************"
     fi
