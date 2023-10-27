@@ -1,3 +1,6 @@
+
+# Serving ML Models With FASTAPI, Redis, Kubernetes, Itsio, Grafana, and Consuming API within Flask
+
 <!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
 
 - [Serving ML Models With FASTAPI, Redis, Kubernetes, Itsio, Grafana, and Consuming API within Flask](#serving-ml-models-with-fastapi-redis-kubernetes-itsio-grafana-and-consuming-api-within-flask)
@@ -19,7 +22,7 @@
 
 <!-- /TOC -->
 
-# Serving ML Models With FASTAPI, Redis, Kubernetes, Itsio, Grafana, and Consuming API within Flask
+
 
 ![Visual Overview](images/tech_stack.png)
 

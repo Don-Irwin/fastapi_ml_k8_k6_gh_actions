@@ -106,10 +106,7 @@
     fi
 
 
-
-
     #allow other processes to write to directory
     chmod -R 777 /var/www/html/
 
     usermod -aG docker ubuntu
-    
