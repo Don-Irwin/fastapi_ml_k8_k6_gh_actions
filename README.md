@@ -15,7 +15,7 @@
     - [Error Condition](#error-condition)
   - [Monitoring Load Testing](#monitoring-load-testing)
   - [Running Load Testing Independently](#running-load-testing-independently)
-  - [Github Actions Testing](#github-actions-testing)
+  - [Using Github Actions to Test the System](#using-github-actions-to-test-the-system)
 
 <!-- /TOC -->
 
@@ -194,11 +194,15 @@ Doing so, we will see the system under load within the dashboard.
 
 ![Visual Overview](images/grafana_dashboard.png)
 
-## Github Actions Testing
+## Using Github Actions to Test the System
 
 This repo includes a custom github action.
 
-This custom github action does the following when a pull request is created within the `dev` branch:
+The YML for this workflow is located at:
+
+([.github/workflows/merge_main.yml](https://github.com/Don-Irwin/fastapi_ml_k8_k6_gh_actions/blob/main/.github/workflows/merge_main.yml))
+
+This custom github action does the following when a pull request is created from the branch `dev` into the branch `main`:
 
 * Tests the dependency installation scripts.
 * Tests the docker builds.
