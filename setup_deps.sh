@@ -12,7 +12,6 @@
     fi
 
     apt update
-    apt upgrade
 
     #remove prompting on auto builds
     apt-get remove needrestart -y
