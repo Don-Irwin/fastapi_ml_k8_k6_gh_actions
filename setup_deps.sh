@@ -1,5 +1,6 @@
 #!/bin/bash
 
+    all_deps=0
     username="ubuntu"
 
     if id "$username" &>/dev/null; then
@@ -11,20 +12,24 @@
     fi
 
     apt update
+    apt upgrade
 
     #remove prompting on auto builds
     apt-get remove needrestart -y
 
-    docker ps >/dev/null
-    if [ $? -eq 0 ]; then
+    apt install curl -y
 
+    docker ps >/dev/null
+    all_deps=$?
+    if [ $all_deps -eq 0 ]; then
         echo "docker installed"
     else
         apt install docker -y
     fi
 
     docker-compose --help >/dev/null
-    if [ $? -eq 0 ]; then
+    all_deps=$?
+    if [ $all_deps -eq 0 ]; then
 
         echo "docker-compose installed"
     else
@@ -32,7 +37,8 @@
     fi
 
     git --help >/dev/null
-    if [ $? -eq 0 ]; then
+    all_deps=$?
+    if [ $all_deps -eq 0 ]; then
 
         echo "git installed"
     else
@@ -43,7 +49,8 @@
      apt install python-is-python3 -y && apt install nano -y
 
     poetry --version >/dev/null
-    if [ $? -eq 0 ]; then
+    all_deps=$?
+    if [ $all_deps -eq 0 ]; then
 
         echo "poetry installed"
     else
@@ -52,7 +59,8 @@
     fi
 
     minikube --help >/dev/null
-    if [ $? -eq 0 ]; then
+    all_deps=$?
+    if [ $all_deps -eq 0 ]; then
 
         echo "minikube installed"
     else
@@ -62,7 +70,8 @@
     fi
 
     k6 --help >/dev/null
-    if [ $? -eq 0 ]; then
+    all_deps=$?
+    if [ $all_deps -eq 0 ]; then
 
         echo "k6 installed"
     else
@@ -72,7 +81,8 @@
 
 
     istioctl --help >/dev/null
-    if [ $? -eq 0 ]; then
+    all_deps=$?
+    if [ $all_deps -eq 0 ]; then
 
         echo "istioctl installed"
     else
@@ -89,7 +99,8 @@
 
 
     kubectl --help >/dev/null
-    if [ $? -eq 0 ]; then
+    all_deps=$?
+    if [ $all_deps -eq 0 ]; then
 
         echo "kubectl installed"
     else
@@ -99,7 +110,8 @@
 
 
     nginx -v >/dev/null
-    if [ $? -eq 0 ]; then
+    all_deps=$?
+    if [ $all_deps -eq 0 ]; then
         echo "nginx installed"
     else
         #make this last
