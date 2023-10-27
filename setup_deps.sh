@@ -6,7 +6,7 @@
         echo "User $username already exists."
     else
         echo "User $username does not exist, creating user..."
-        sudo adduser --disabled-password "$username"
+        sudo adduser --disabled-password --gecos "" "$username"
         echo "User $username has been created with no password."
     fi
 
@@ -83,6 +83,7 @@
         mv ./istio-1.19.0 /usr/local/bin/istio-1.19.0
         echo "PATH=$PATH:/usr/local/bin/istio-1.19.0/bin/">>/home/ubuntu/.bashrc
         export PATH="$PATH:/usr/local/bin/istio-1.19.0/bin/"
+        chmod 777 -R  /home/ubuntu/.bashrc
         echo "PATH=\"$PATH\"">/etc/environment
     fi
 
