@@ -15,35 +15,98 @@
     #remove prompting on auto builds
     apt-get remove needrestart -y
 
+    docker ps >/dev/null
+    if [ $? -eq 0 ]; then
+
+        echo "docker installed"
+    else
+        apt install docker -y
+    fi
+
+    docker-compose --help >/dev/null
+    if [ $? -eq 0 ]; then
+
+        echo "docker-compose installed"
+    else
+        apt install docker-compose -y
+    fi
+
+    git --help >/dev/null
+    if [ $? -eq 0 ]; then
+
+        echo "git installed"
+    else
+        apt install git -y
+    fi
+
     #install core stuff
-    apt install docker -y && apt install docker-compose -y && apt install git -y && apt install python-is-python3 -y && apt install nano -y
+     apt install python-is-python3 -y && apt install nano -y
 
-    #get poetry
-    curl -sSL https://install.python-poetry.org | POETRY_HOME=/ python -
+    poetry --version >/dev/null
+    if [ $? -eq 0 ]; then
 
-    #get minikube
-    curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-    install minikube-linux-amd64 /usr/local/bin/minikube
+        echo "poetry installed"
+    else
+        #get poetry
+        curl -sSL https://install.python-poetry.org | POETRY_HOME=/ python -
+    fi
 
-    #get k6
-    snap install k6
+    minikube --help >/dev/null
+    if [ $? -eq 0 ]; then
 
-    #istio
-    #istio
-    curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.19.0 TARGET_ARCH=x86_64 sh -
-    chmod 777 -R  istio-1.19.0
-    rm -rf /usr/local/bin/istio-1.19.0
-    mv ./istio-1.19.0 /usr/local/bin/istio-1.19.0
-    echo "PATH=$PATH:/usr/local/bin/istio-1.19.0/bin/">>/home/ubuntu/.bashrc
-    export PATH="$PATH:/usr/local/bin/istio-1.19.0/bin/"
-    echo "PATH=\"$PATH\"">/etc/environment
+        echo "minikube installed"
+    else
+        #get minikube
+        curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        install minikube-linux-amd64 /usr/local/bin/minikube
+    fi
 
-    curl -LO https://dl.k8s.io/release/v1.28.1/bin/linux/amd64/kubectl
-    install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    k6 --help >/dev/null
+    if [ $? -eq 0 ]; then
+
+        echo "k6 installed"
+    else
+        #get k6
+        snap install k6
+    fi
 
 
-    #make this last
-    apt install nginx -y
+    istioctl --help >/dev/null
+    if [ $? -eq 0 ]; then
+
+        echo "istioctl installed"
+    else
+        #istio
+        curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.19.0 TARGET_ARCH=x86_64 sh -
+        chmod 777 -R  istio-1.19.0
+        rm -rf /usr/local/bin/istio-1.19.0
+        mv ./istio-1.19.0 /usr/local/bin/istio-1.19.0
+        echo "PATH=$PATH:/usr/local/bin/istio-1.19.0/bin/">>/home/ubuntu/.bashrc
+        export PATH="$PATH:/usr/local/bin/istio-1.19.0/bin/"
+        echo "PATH=\"$PATH\"">/etc/environment
+    fi
+
+
+    kubectl --help >/dev/null
+    if [ $? -eq 0 ]; then
+
+        echo "kubectl installed"
+    else
+        curl -LO https://dl.k8s.io/release/v1.28.1/bin/linux/amd64/kubectl
+        install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    fi
+
+
+    nginx -v >/dev/null
+    if [ $? -eq 0 ]; then
+        echo "nginx installed"
+    else
+        #make this last
+        apt install nginx -y
+    fi
+
+
+
 
     #allow other processes to write to directory
     chmod -R 777 /var/www/html/
