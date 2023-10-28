@@ -137,6 +137,16 @@
     usermod -aG docker ubuntu
     usermod -aG docker $(logname)
 
+echo "Before newgrp"
+
+/usr/bin/newgrp docker <<EONG
+echo "hello from within newgrp"
+
+EONG
+
+    echo "After newgrp"
+
+
     echo PATH=$PATH
     echo all_deps=$all_deps
     if [ $all_deps -ne 0 ]; then

@@ -2,6 +2,15 @@
 
     export PATH=$(cat /etc/environment)
 
+echo "Before newgrp"
+
+/usr/bin/newgrp docker <<EONG
+echo "hello from within newgrp"
+
+EONG
+
+    echo "After newgrp"
+
     all_deps=0
 
     sleep 1
