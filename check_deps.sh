@@ -118,5 +118,7 @@ EONG
     else
         echo "******************************"
         echo " All Dependencies have been installed."
+        echo " In some cases, though, it may be necessary to reboot."        
+        echo " This is especially true if docker was not setup prior to this installation."        
         echo "******************************"
     fi
