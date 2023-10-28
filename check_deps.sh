@@ -3,22 +3,6 @@
     export PATH=$(cat /etc/environment)
 
     all_deps=0
-    username="ubuntu"
-
-    if id "$username" &>/dev/null; then
-        echo "User $username already exists."
-    else
-        echo "User $username does not exist, creating user..."
-        sudo adduser --disabled-password --gecos "" "$username"
-        echo "User $username has been created with no password."
-    fi
-
-    apt update
-
-    #remove prompting on auto builds
-    apt-get remove needrestart -y
-
-    apt install curl -y
 
     docker ps >/dev/null
     let "all_deps=$all_deps+$?"
@@ -26,17 +10,17 @@
     if [ $? -eq 0 ]; then
         echo "docker installed"
     else
-        apt install docker -y
+        echo "docker NOT installed"
     fi
+
 
     docker-compose --help >/dev/null
     let "all_deps=$all_deps+$?"
     docker-compose --help >/dev/null
     if [ $? -eq 0 ]; then
-
         echo "docker-compose installed"
     else
-        apt install docker-compose -y
+        echo "docker-compose NOT installed"
     fi
 
     git --help >/dev/null
@@ -46,7 +30,7 @@
 
         echo "git installed"
     else
-        apt install git -y
+        echo "git NOT installed"
     fi
 
     #install core stuff
@@ -59,8 +43,7 @@
 
         echo "poetry installed"
     else
-        #get poetry
-        curl -sSL https://install.python-poetry.org | POETRY_HOME=/ python -
+        echo "poetry NOT installed"
     fi
 
     minikube --help >/dev/null
@@ -70,20 +53,16 @@
 
         echo "minikube installed"
     else
-        #get minikube
-        curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-        install minikube-linux-amd64 /usr/local/bin/minikube
+        echo "minikube NOT installed"
     fi
 
     k6 --help >/dev/null
     let "all_deps=$all_deps+$?"
     k6 --help >/dev/null
     if [ $? -eq 0 ]; then
-
         echo "k6 installed"
     else
-        #get k6
-        snap install k6
+        echo "k6 NOT installed"
     fi
 
 
@@ -91,16 +70,9 @@
     let "all_deps=$all_deps+$?"
     istioctl --help >/dev/null
     if [ $? -eq 0 ]; then
-
         echo "istioctl installed"
     else
-        #istio
-        curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.19.0 TARGET_ARCH=x86_64 sh -
-        chmod 777 -R  istio-1.19.0
-        export PATH="$PATH:$(pwd)/istio-1.19.0/bin/"
-        echo $PATH>/etc/environment
-        cat /etc/environment
-
+        echo "istioctl NOT installed"
     fi
 
 
@@ -108,11 +80,9 @@
     let "all_deps=$all_deps+$?"
     kubectl --help >/dev/null
     if [ $? -eq 0 ]; then
-
         echo "kubectl installed"
     else
-        curl -LO https://dl.k8s.io/release/v1.28.1/bin/linux/amd64/kubectl
-        install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+        echo "kubectl NOT installed"
     fi
 
 
@@ -122,8 +92,7 @@
     if [ $? -eq 0 ]; then
         echo "nginx installed"
     else
-        #make this last
-        apt install nginx -y
+        echo "nginx NOT installed"
     fi
 
 
@@ -131,7 +100,6 @@
     chmod -R 777 /var/www/html/
 
     usermod -aG docker ubuntu
-    usermod -aG docker $(logname)
 
     echo PATH=$PATH
     echo all_deps=$all_deps
