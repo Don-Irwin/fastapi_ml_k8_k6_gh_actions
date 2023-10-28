@@ -96,7 +96,8 @@
         curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.19.0 TARGET_ARCH=x86_64 sh -
         chmod 777 -R  istio-1.19.0
         export PATH="$PATH:$(pwd)/istio-1.19.0/bin/"
-        echo $PATH
+        echo $PATH>/etc/environment
+        cat /etc/environment
 
     fi
 
