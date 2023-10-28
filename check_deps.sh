@@ -4,6 +4,8 @@
 
     all_deps=0
 
+    newgrp docker
+    sleep 1
     docker ps >/dev/null
     let "all_deps=$all_deps+$?"
     docker ps >/dev/null
@@ -95,11 +97,6 @@
         echo "nginx NOT installed"
     fi
 
-
-    #allow other processes to write to directory
-    chmod -R 777 /var/www/html/
-
-    usermod -aG docker ubuntu
 
     echo PATH=$PATH
     echo all_deps=$all_deps

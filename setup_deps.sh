@@ -84,6 +84,10 @@
     else
         #get k6
         snap install k6
+        export PATH="$PATH:/snap/bin/"
+        echo $PATH>/etc/environment
+        cat /etc/environment
+
     fi
 
 
@@ -132,6 +136,7 @@
 
     usermod -aG docker ubuntu
     usermod -aG docker $(logname)
+    newgrp docker
 
     echo PATH=$PATH
     echo all_deps=$all_deps
