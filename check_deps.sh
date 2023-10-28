@@ -4,7 +4,6 @@
 
     all_deps=0
 
-    newgrp docker
     sleep 1
     docker ps >/dev/null
     let "all_deps=$all_deps+$?"
