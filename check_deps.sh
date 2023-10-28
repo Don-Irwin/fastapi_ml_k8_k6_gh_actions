@@ -43,9 +43,6 @@ EONG
         echo "git NOT installed"
     fi
 
-    #install core stuff
-     apt install python-is-python3 -y && apt install nano -y
-
     poetry --version >/dev/null
     let "all_deps=$all_deps+$?"
     poetry --version >/dev/null    
