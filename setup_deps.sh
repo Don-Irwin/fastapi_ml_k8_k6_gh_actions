@@ -1,5 +1,7 @@
 #!/bin/bash
 
+    export PATH=$(cat /etc/environment)
+    
     all_deps=0
     username="ubuntu"
 
@@ -133,7 +135,8 @@
     if [ $all_deps -ne 0 ]; then
         echo "******************************"
         echo " not all dependencies have been installed"
-        echo " re-run . setup_deps.sh"
+        echo " re-run: "
+        echo "sudo bash ./setup_deps.sh"
         echo " to see if this corrects the issue."
         echo "******************************"
     else
