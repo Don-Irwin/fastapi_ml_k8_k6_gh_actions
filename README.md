@@ -79,7 +79,7 @@ This system has many pre-requisites, git, python, docker, docker-compose, miniku
 Run the following script as root in order to install all pre-reqs either locally, on a local virtual machine or within the cloud.
 
 ```
-git clone https://github.com/Don-Irwin/fastapi_ml_k8_k6_gh_actions && cd ./fastapi_ml_k8_k6_gh_actions && sudo bash ./setup_deps.sh && export PATH=$(cat /etc/environment) && . check_deps.sh
+git clone https://github.com/Don-Irwin/fastapi_ml_k8_k6_gh_actions && cd ./fastapi_ml_k8_k6_gh_actions && sudo bash ./setup_deps.sh && export PATH=$(cat /etc/environment) && newgrp docker && . check_deps.sh
 ```
 
 Or step-by-step.

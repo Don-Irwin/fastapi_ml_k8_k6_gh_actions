@@ -136,7 +136,6 @@
 
     usermod -aG docker ubuntu
     usermod -aG docker $(logname)
-    newgrp docker
 
     echo PATH=$PATH
     echo all_deps=$all_deps
