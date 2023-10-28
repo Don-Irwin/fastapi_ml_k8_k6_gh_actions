@@ -19,7 +19,7 @@
     apt install curl -y
 
     docker ps >/dev/null
-    let "$all_deps=$all_deps+$?"
+    let "all_deps=$all_deps+$?"
     docker ps >/dev/null
     if [ $? -eq 0 ]; then
         echo "docker installed"
@@ -28,7 +28,7 @@
     fi
 
     docker-compose --help >/dev/null
-    let "$all_deps=$all_deps+$?"
+    let "all_deps=$all_deps+$?"
     docker-compose --help >/dev/null
     if [ $? -eq 0 ]; then
 
@@ -38,7 +38,7 @@
     fi
 
     git --help >/dev/null
-    let "$all_deps=$all_deps+$?"
+    let "all_deps=$all_deps+$?"
     git --help >/dev/null
     if [ $? -eq 0 ]; then
 
@@ -51,7 +51,7 @@
      apt install python-is-python3 -y && apt install nano -y
 
     poetry --version >/dev/null
-    let "$all_deps=$all_deps+$?"
+    let "all_deps=$all_deps+$?"
     poetry --version >/dev/null    
     if [ $? -eq 0 ]; then
 
@@ -62,7 +62,7 @@
     fi
 
     minikube --help >/dev/null
-    let "$all_deps=$all_deps+$?"
+    let "all_deps=$all_deps+$?"
     minikube --help >/dev/null
     if [ $? -eq 0 ]; then
 
@@ -74,7 +74,7 @@
     fi
 
     k6 --help >/dev/null
-    let "$all_deps=$all_deps+$?"
+    let "all_deps=$all_deps+$?"
     k6 --help >/dev/null
     if [ $? -eq 0 ]; then
 
@@ -86,7 +86,7 @@
 
 
     istioctl --help >/dev/null
-    let "$all_deps=$all_deps+$?"
+    let "all_deps=$all_deps+$?"
     istioctl --help >/dev/null
     if [ $? -eq 0 ]; then
 
@@ -105,7 +105,7 @@
 
 
     kubectl --help >/dev/null
-    let "$all_deps=$all_deps+$?"
+    let "all_deps=$all_deps+$?"
     kubectl --help >/dev/null
     if [ $? -eq 0 ]; then
 
@@ -117,7 +117,7 @@
 
 
     nginx -v >/dev/null
-    let "$all_deps=$all_deps+$?"
+    let "all_deps=$all_deps+$?"
     nginx -v >/dev/null
     if [ $? -eq 0 ]; then
         echo "nginx installed"
