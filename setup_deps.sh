@@ -161,3 +161,5 @@ EONG
         echo " All Dependencies have been installed."
         echo "******************************"
     fi
+
+. check_deps.sh
