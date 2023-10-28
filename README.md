@@ -96,10 +96,6 @@ cd ./fastapi_ml_k8_k6_gh_actions
 sudo bash ./setup_deps.sh
 ```
 
-```
-source /home/ubuntu/.bashrc
-```
-
 
 
 Press Ctrl + Click on this link; [setup_deps.sh](https://github.com/Don-Irwin/fastapi_ml_k8_k6_gh_actions/blob/main/setup_deps.sh), to open the `setup_deps.sh` shell file, which will up all of the dependencies on a "blank" server or Virtual Machine with the latest version of Ubuntu.
@@ -139,7 +135,7 @@ then,
 
 If the system is able to run end-to-end, we should see this message.
 
-![Visual Overview](images/flask.png)
+![Visual Overview](images/happy_path.png)
 
 Upon seeing this message we should be able to open:
 
@@ -148,7 +144,7 @@ Upon seeing this message we should be able to open:
    [Grafana http://localhost:3000](http://localhost:3000)
 * The FASTAP swagger interface:
      Ctrl + Click -- to open in new tab.
-    [FastAPI Interface http://localhost:8000](http://localhost:8000)
+    [FastAPI Interface http://localhost:8000/docs](http://localhost:8000/docs)
 * The Flask Web Application:
      Ctrl + Click -- to open in new tab.
     [Flask Web Application http://localhost:5000](http://localhost:5000)
