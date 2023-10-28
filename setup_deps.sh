@@ -1,7 +1,7 @@
 #!/bin/bash
 
     export PATH=$(cat /etc/environment)
-    
+
     all_deps=0
     username="ubuntu"
 
@@ -132,6 +132,8 @@
 
     usermod -aG docker ubuntu
 
+    echo PATH=$PATH
+    echo all_deps=$all_deps
     if [ $all_deps -ne 0 ]; then
         echo "******************************"
         echo " not all dependencies have been installed"
